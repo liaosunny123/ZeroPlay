@@ -43,6 +43,7 @@
 
   <ItemGroup>
     <Folder Include="Util\" />
+    <Folder Include="Model\" />
   </ItemGroup>
 
   <ItemGroup>
