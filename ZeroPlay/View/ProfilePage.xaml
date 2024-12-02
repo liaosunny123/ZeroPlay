@@ -9,7 +9,88 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
+	<Grid>
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="150"/>
+				<RowDefinition Height="50"/>
+			</Grid.RowDefinitions>
 
-    </Grid>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="200"/>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+
+			<!--图片区域-->
+			<Border
+				x:Name="BackgroundImageBorder"
+				HorizontalAlignment="Stretch"
+				VerticalAlignment="Stretch"
+				CornerRadius="0, 0, 20, 20"
+				BorderBrush="Gray"
+				BorderThickness="0"
+				Grid.Row="0"
+				Grid.ColumnSpan="3">
+				<Image
+					x:Name="BackgroundImage"
+					Stretch="UniformToFill"
+					Source="https://i.mij.rip/2023/08/26/0caa1681f9ae3de38f7d8abcc3b849fc.jpeg"
+					VerticalAlignment="Center"
+					HorizontalAlignment="Center" />
+			</Border>
+
+			<!--头像区域-->
+			<Border
+				Name="AvatarBorder"
+				CornerRadius="50"
+				HorizontalAlignment="Left"
+				VerticalAlignment="Top"
+				Margin="50,100,0,0"
+				Height="100"
+				Width="100"
+				BorderBrush="White"
+				BorderThickness="1"
+				Grid.Row="0"
+				Grid.Column="0"
+				Grid.RowSpan="2">
+				<Image
+					Name="AvatarImage"
+					Stretch="UniformToFill"
+					Source="https://api.multiavatar.com/mhw.png"/>
+			</Border>
+			
+			<!--用户名和ID区域-->
+			<StackPanel
+				Orientation="Vertical"
+				Grid.Row="1"
+				Grid.Column="1">
+				<TextBlock
+					Name="UserNameTextBlock"
+					Text="mhw"
+					FontSize="24"
+					FontWeight="Bold"
+					/>
+				<TextBlock
+					Name="UserIdTextBlock"
+					Text="uid: 21"
+					FontSize="12"
+					Opacity="0.8"/>
+			</StackPanel>
+
+			<Button Content="关注"
+					HorizontalAlignment="Right"
+					Width="100"
+					Height="30"
+					Background="LightBlue"
+					CornerRadius="10"
+					Grid.Row="2"
+					Grid.Column="3"/>	
+
+		</Grid>
+		
+		<!--详细信息区域-->
+		
+		
+	</Grid>
 </Page>
