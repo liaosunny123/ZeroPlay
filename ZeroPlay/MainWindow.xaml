@@ -9,7 +9,38 @@
     mc:Ignorable="d"
     Title="ZeroPlay">
 
-    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Button x:Name="myButton" Click="myButton_Click">Click Me</Button>
-    </StackPanel>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--Title Bar Region-->
+        <Border x:Name="AppTitleBar" Height="35">
+            <TextBlock Text="ZeroPlay"
+                        HorizontalAlignment="Center" 
+                        VerticalAlignment="Center" 
+                        TextAlignment="Center"/>
+        </Border>
+
+        <NavigationView x:Name="NavigateController"
+                 PaneDisplayMode="LeftCompact"
+                 IsSettingsVisible="True"
+                 SelectionChanged="NavigateController_SelectionChanged"
+                 SelectedItem="{Binding ElementName=HomePageItem}"
+                 Grid.Row="1">
+            <!-- 顶部菜单项 -->
+            <NavigationView.MenuItems>
+                <NavigationViewItem x:Name="HomePageItem" Icon="Home" Content="主页" Tag="HomePage"/>
+            </NavigationView.MenuItems>
+
+            <!-- 底部菜单项 -->
+            <NavigationView.FooterMenuItems>
+                <NavigationViewItem x:Name="ProfilePageItem" Icon="Contact" Content="我的" Tag="ProfilePage"/>
+            </NavigationView.FooterMenuItems>
+
+            <Frame x:Name="NavigationContentFrame"/>
+        </NavigationView>
+
+    </Grid>
 </Window>
