@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="ZeroPlay.Control.LoginDialogContent"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ZeroPlay.Control"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <TabView
+        IsAddTabButtonVisible="False"
+        >
+        <!-- 登录 Tab -->
+        <TabViewItem 
+            IsClosable="False"
+            Header="登录">
+            <StackPanel Spacing="10" Padding="10">
+                <TextBox x:Name="LoginUsernameBox" 
+                         Margin="0,0,10,0"
+                         PlaceholderText="用户名" />
+                   
+                <PasswordBox x:Name="LoginPasswordBox"
+                             Margin="0,0,10,0"
+                             PlaceholderText="密码" />
+
+                <TextBlock x:Name="LoginErrorTip"
+                    Text=""
+                    IsColorFontEnabled="True"
+                    Foreground="Red"
+                    Visibility="Collapsed"
+                    />
+                
+                <StackPanel
+                    Orientation="Horizontal"
+                    >
+                    <Button x:Name="LoginButton" 
+                        Content="登录"
+                        Width="200"
+                        Margin="20"
+                        HorizontalAlignment="Center"
+                        Click="LoginButton_Click" />
+
+                    <Button
+                        Content="取消"
+                        Width="200"
+                        HorizontalAlignment="Center"
+                        Click="Cancellation_Click" />
+                </StackPanel>
+                
+            </StackPanel>
+        </TabViewItem>
+
+        <!-- 注册 Tab -->
+        <TabViewItem 
+            IsClosable="False"
+            Header="注册">
+            <StackPanel Spacing="10" Padding="10">
+                <TextBox x:Name="RegisterUsernameBox" 
+                         Margin="0,0,10,0"
+                         PlaceholderText="用户名" />
+                
+                <PasswordBox 
+                    x:Name="RegisterPasswordBox" 
+                    Margin="0,0,10,0"
+                    PlaceholderText="密码" />
+                
+                <PasswordBox x:Name="ConfirmPasswordBox" 
+                             Margin="0,0,10,0"
+                             PlaceholderText="确认密码" />
+
+                <TextBlock x:Name="RegisterErrorTip"
+                           Text=""
+                           IsColorFontEnabled="True"
+                           Foreground="Red"
+                           Visibility="Collapsed"
+                           />
+
+                <StackPanel
+                    Orientation="Horizontal"
+                    >
+                    <Button x:Name="RegisterButton" 
+                        Content="注册"
+                        Width="200"
+                        Margin="20"
+                        HorizontalAlignment="Center"
+                        Click="RegisterButton_Click" />
+
+                    <Button
+                        Content="取消"
+                        Width="200"
+                        HorizontalAlignment="Center"
+                        Click="Cancellation_Click" />
+                </StackPanel>
+            </StackPanel>
+        </TabViewItem>
+    </TabView>
+</UserControl>

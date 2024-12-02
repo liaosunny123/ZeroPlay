@@ -17,6 +17,9 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using ZeroPlay.Interface;
+using ZeroPlay.Service;
+using ZeroPlay.ShareModel;
 using ZeroPlay.View;
 using ZeroPlay.ViewModel;
 
@@ -54,6 +57,14 @@ namespace ZeroPlay
 
                        // ViewModel
                        services.AddSingleton<HomeViewModel, HomeViewModel>();
+                       services.AddSingleton<ProfileViewModel, ProfileViewModel>();
+                       
+
+                       // ShareModel
+                       services.AddSingleton<UserDataShareModel, UserDataShareModel>();
+
+                       // Service
+                       services.AddSingleton<IZeroPlayService, ZeroPlayClient>();
                    })
                    .Build();
         }

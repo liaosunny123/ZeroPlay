@@ -11,6 +11,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Control\LoginDialogContent.xaml" />
     <None Remove="View\HomePage.xaml" />
     <None Remove="View\ProfilePage.xaml" />
     <None Remove="View\SettingsPage.xaml" />
@@ -42,8 +43,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Util\" />
     <Folder Include="Model\" />
+    <Folder Include="Util\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Control\LoginDialogContent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
   <ItemGroup>
