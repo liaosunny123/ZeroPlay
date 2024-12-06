@@ -73,6 +73,8 @@ namespace ZeroPlay
                             }
                         }
 
+						var profilePage = App.GetRequiredService<ProfilePage>()!;
+						profilePage.ViewModel.RequestUserData(UserData.UserId);
                         NavigationContentFrame.Content = App.GetRequiredService<ProfilePage>();
                         break;
                     default:
@@ -123,6 +125,8 @@ namespace ZeroPlay
 
                 UserData.UserToken = errorOrToken;
                 UserData.IsLogin = true;
+				// ¡Ÿ ±”≤±‡¬Î
+				UserData.UserId = 21;
                 return true;
             }
 

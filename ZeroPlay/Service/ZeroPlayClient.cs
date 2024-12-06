@@ -1,4 +1,5 @@
-﻿using RestSharp;
+﻿using Microsoft.Extensions.Hosting;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Text;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using ZeroPlay.Interface;
+using ZeroPlay.Model;
 
 namespace ZeroPlay.Service
 {
@@ -102,5 +104,35 @@ namespace ZeroPlay.Service
             message = respJson["token"]!.GetValue<string>();
             return true;
         }
+
+		public bool TryGetUserData(int uid, string token, out string message)
+		{
+			var req = new RestRequest("/douyin/user/", Method.Get)
+				.AddQueryParameter("user_id", uid)
+				.AddQueryParameter("token", token);
+			var resp = client.Execute(req);
+
+			if (!resp.IsSuccessStatusCode)
+			{
+				message = "Request to Zeroplay is not successful, check your network environment please.";
+				return false;
+			}
+
+			if (resp.Content is null || String.IsNullOrWhiteSpace(resp.Content))
+			{
+				message = "Unexpected Zeroplay response, please wait for a minute and try again.";
+				return false;
+			}
+
+			var respJson = JsonNode.Parse(resp.Content)!;
+			if (respJson["status_code"]!.GetValue<int>() != 0)
+			{
+				message = respJson["status_msg"]!.GetValue<string>();
+				return false;
+			}
+
+			message = respJson["user"]!.ToString();
+			return true;
+		}
     }
 }

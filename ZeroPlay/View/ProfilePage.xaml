@@ -9,11 +9,21 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+	<Page.Resources>
+		<local:StringToImageSourceConverter x:Key="StringToImageSourceConverter" />
+	</Page.Resources>
+
 	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+		
 		<Grid>
 			<Grid.RowDefinitions>
 				<RowDefinition Height="150"/>
-				<RowDefinition Height="50"/>
+				<RowDefinition Height="100"/>
+				<RowDefinition Height="*"/>
 			</Grid.RowDefinitions>
 
 			<Grid.ColumnDefinitions>
@@ -35,7 +45,9 @@
 				<Image
 					x:Name="BackgroundImage"
 					Stretch="UniformToFill"
-					Source="https://i.mij.rip/2023/08/26/0caa1681f9ae3de38f7d8abcc3b849fc.jpeg"
+					Source="{
+					Binding UserData.BackgroundImageSrc,
+					Converter={StaticResource StringToImageSourceConverter}}"
 					VerticalAlignment="Center"
 					HorizontalAlignment="Center" />
 			</Border>
@@ -57,9 +69,11 @@
 				<Image
 					Name="AvatarImage"
 					Stretch="UniformToFill"
-					Source="https://api.multiavatar.com/mhw.png"/>
+					Source="{
+					Binding UserData.AvatarSrc, 
+					Converter={StaticResource StringToImageSourceConverter}}"/>
 			</Border>
-			
+
 			<!--用户名和ID区域-->
 			<StackPanel
 				Orientation="Vertical"
@@ -67,30 +81,70 @@
 				Grid.Column="1">
 				<TextBlock
 					Name="UserNameTextBlock"
-					Text="mhw"
+					Text="{Binding UserData.UserName}"
 					FontSize="24"
 					FontWeight="Bold"
 					/>
 				<TextBlock
 					Name="UserIdTextBlock"
-					Text="uid: 21"
+					Text="{Binding UidStr}"
 					FontSize="12"
 					Opacity="0.8"/>
+				<TextBlock
+					Name="SignatureTextBlock"
+					Text="{Binding SignatureStr}"
+					Opacity="0.8"
+					FontSize="12"/>
 			</StackPanel>
 
-			<Button Content="关注"
+			<Button Name="SubscribeButton"
+					Content="关注"
 					HorizontalAlignment="Right"
 					Width="100"
 					Height="30"
 					Background="LightBlue"
 					CornerRadius="10"
-					Grid.Row="2"
-					Grid.Column="3"/>	
-
+					Grid.Row="1"
+					Grid.Column="3"/>
+			
 		</Grid>
 		
 		<!--详细信息区域-->
-		
-		
+		<TabView Name="DetailedInfoTabView"
+				 HorizontalAlignment="Center"
+				 IsAddTabButtonVisible="False"
+				 AllowDropTabs="False"
+				 Grid.Row="2">
+
+			<TabViewItem Header="投稿"
+						 HorizontalContentAlignment="Center"
+						 CanDrag="False"
+						 IsClosable="False"
+						 Width="100">
+				<ListView x:Name="CompositionList" 
+						  Margin="10"
+						  SelectionMode="None">
+					<!-- 示例静态数据 -->
+					<ListViewItem Content="Item 1" />
+					<ListViewItem Content="Item 2" />
+					<ListViewItem Content="Item 3" />
+					<ListViewItem Content="Item 4" />
+				</ListView>
+			</TabViewItem>
+			<TabViewItem Header="关注"
+						 HorizontalContentAlignment="Center"
+						 
+						 IsClosable="False">
+				<ListView x:Name="FollowList" 
+						  Margin="10"
+						  SelectionMode="None">
+					<!-- 示例静态数据 -->
+					<ListViewItem Content="Item 1" />
+					<ListViewItem Content="Item 2" />
+					<ListViewItem Content="Item 3" />
+					<ListViewItem Content="Item 4" />
+				</ListView>
+			</TabViewItem>
+		</TabView>
 	</Grid>
 </Page>
