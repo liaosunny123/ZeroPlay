@@ -10,8 +10,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using ZeroPlay.Control;
+using ZeroPlay.ViewModel;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -23,9 +26,15 @@ namespace ZeroPlay.View
     /// </summary>
     public sealed partial class ProfilePage : Page
     {
+
+        public ProfileViewModel ViewModel => App.GetRequiredService<ProfileViewModel>() ??
+            throw new ApplicationException("Can not load Profile ViewModel.");
+
         public ProfilePage()
         {
             this.InitializeComponent();
         }
+
     }
 }
+

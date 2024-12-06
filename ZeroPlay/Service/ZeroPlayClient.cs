@@ -43,7 +43,7 @@ namespace ZeroPlay.Service
 
         public bool TryLogin(string username, string password, out string tokenOrRetMsg)
         {
-            var req = new RestRequest("/api/login", Method.Post)
+            var req = new RestRequest("/douyin/user/login/", Method.Post)
                 .AddQueryParameter("username", username)
                 .AddQueryParameter("password", password);
             var resp = client.Execute(req);
@@ -74,7 +74,7 @@ namespace ZeroPlay.Service
 
         public bool TryRegister(string username, string password, out string message)
         {
-            var req = new RestRequest("/api/register", Method.Post)
+            var req = new RestRequest("/douyin/user/register/", Method.Post)
                 .AddQueryParameter("username", username)
                 .AddQueryParameter("password", password);
             var resp = client.Execute(req);
