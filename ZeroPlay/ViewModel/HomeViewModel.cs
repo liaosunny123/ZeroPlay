@@ -24,7 +24,7 @@ namespace ZeroPlay.ViewModel
 
         public HomeViewModel()
         {
-            // 初始化数据集合并添加示例数据
+            // 初始化数据集合并添加示例数据q
             MediaItems = new ObservableCollection<MediaItem>();
             MediaItems.Add(new MediaItem { Image = "Assets/Image1.jpg", Name = "First Media" });
             MediaItems.Add(new MediaItem { Image = "Assets/Image2.jpg", Name = "Second Media" });
