@@ -42,7 +42,16 @@ namespace ZeroPlay.Interface
 		bool TryGetUserData(int uid, string token, out string message);
 
 		/// <summary>
-		/// 
+		/// 尝试关注用户
 		/// </summary>
+		/// <param name="uid"/>
+		/// <param name="token"/>
+		/// <param name="follow">设置关注或取消关注</param>
+		/// <param name="message"/>
+		bool TrySetFollow(int uid, string token, bool follow, out string message);
+
+		bool TryGetFollowList(int uid, string token, out string message);
+
+		bool TryGetPostList(int uid, string token, out string message);
     }
 }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Background;
+using System.Text.Json.Nodes;
 
 namespace ZeroPlay.Model
 {
@@ -119,11 +120,33 @@ namespace ZeroPlay.Model
 			}
 		}
 
-		public event PropertyChangedEventHandler PropertyChanged;
+		public event PropertyChangedEventHandler? PropertyChanged;
 
 		protected virtual void OnPropertyChanged(string propertyName)
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
+
+		public void InitializeFromJson(JsonNode userJson)
+		{
+			UserId = userJson["id"]!.GetValue<int>();
+			UserName = userJson["name"]!.GetValue<string>();
+			AvatarSrc = userJson["avatar"]!.GetValue<string>();
+			BackgroundImageSrc = userJson["background_image"]!.GetValue<string>();
+			FollowCount = userJson["follow_count"]!.GetValue<int>();
+			FollowerCount = userJson["follower_count"]!.GetValue<int>();
+			IsFollow = userJson["is_follow"]!.GetValue<bool>();
+			Signature = userJson["signature"]!.GetValue<string>();
+			TotalFavorated = userJson["total_favorited"]!.GetValue<int>();
+			FavoriteCount = userJson["favorite_count"]!.GetValue<int>();
+			PostedCount = userJson["work_count"]!.GetValue<int>();
+		}
+
+		public UserDataModel(JsonNode userJson)
+		{
+			InitializeFromJson(userJson);
+		}
+
+		public UserDataModel() { }
 	}
 }

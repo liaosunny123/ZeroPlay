@@ -16,6 +16,8 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using ZeroPlay.Control;
 using ZeroPlay.ViewModel;
+using Microsoft.UI.Xaml.Media.Animation;
+
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -27,6 +29,7 @@ namespace ZeroPlay.View
     /// </summary>
     public sealed partial class ProfilePage : Page
     {
+		private Storyboard? _currentStoryboard = null;
 
         public ProfileViewModel ViewModel => App.GetRequiredService<ProfileViewModel>() ??
             throw new ApplicationException("Can not load Profile ViewModel.");
@@ -35,25 +38,58 @@ namespace ZeroPlay.View
         {
             this.InitializeComponent();
 			this.DataContext = ViewModel;
-			DetailedInfoTabView.SizeChanged += (s, e) => { UpdateTabWidths(); };
 		}
 
-		private void UpdateTabWidths()
+		private void OnSubscribeButtonClick(object sender, RoutedEventArgs e)
 		{
-			if (DetailedInfoTabView.TabItems.Count == 0) return;
-
-			// 每个选项卡的宽度 = TabView 的实际宽度 / 选项卡数量
-			double tabWidth = DetailedInfoTabView.ActualWidth / DetailedInfoTabView.TabItems.Count;
-
-			foreach (var tab in DetailedInfoTabView.TabItems)
+			if (!ViewModel.ToggleFollowUser(out string message))
 			{
-				if (tab is TabViewItem tabViewItem)
-				{
-					tabViewItem.Width = tabWidth;
-				}
+				ShowMessage(message);
 			}
 		}
 
+		private void ShowMessage(string message)
+		{
+			if(_currentStoryboard != null)
+			{
+				_currentStoryboard.Stop();
+				_currentStoryboard = null;
+			}
+			popupText.Text = message;
+			var fadeOutAnimation = new DoubleAnimation
+			{
+				From = 1,
+				To = 0,  
+				Duration = new Duration(TimeSpan.FromSeconds(3))
+			};
+
+			var moveUpAnimation = new DoubleAnimation
+			{
+				From = 0, // 从当前位置开始
+				To = -50, // 向上移动 50 像素
+				Duration = new Duration(TimeSpan.FromSeconds(3)) // 设置持续时间
+			};
+
+			var translateTransform = new TranslateTransform();
+			infoPopup.RenderTransform = translateTransform;
+			Storyboard.SetTarget(moveUpAnimation, translateTransform);
+			Storyboard.SetTargetProperty(moveUpAnimation, "Y");
+
+			var storyboard = new Storyboard();
+			_currentStoryboard = storyboard;
+			Storyboard.SetTarget(fadeOutAnimation, infoPopup);
+			Storyboard.SetTargetProperty(fadeOutAnimation, "Opacity");
+
+			storyboard.Children.Add(moveUpAnimation);
+			storyboard.Children.Add(fadeOutAnimation);
+			infoPopup.IsOpen = true;
+			storyboard.Begin();
+			storyboard.Completed += (s, args) =>
+			{
+				infoPopup.IsOpen = false;  // 动画完成后关闭 Popup
+			};
+
+		}
 	}
 
 	public class StringToImageSourceConverter : IValueConverter
