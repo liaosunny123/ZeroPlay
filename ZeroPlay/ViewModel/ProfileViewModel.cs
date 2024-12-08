@@ -17,9 +17,8 @@ using static System.Net.WebRequestMethods;
 
 namespace ZeroPlay.ViewModel
 {
-    public partial class ProfileViewModel : ObservableRecipient, INotifyPropertyChanged
+    public partial class ProfileViewModel : ObservableRecipient
     {
-		private UserDataModel _userDataModel = new UserDataModel();
 		private UserDataShareModel _userDataShareModel = App.GetRequiredService<UserDataShareModel>() ??
 			throw new ApplicationException("Can not load user data resource.");
 		private IZeroPlayService _clientService = App.GetRequiredService<IZeroPlayService>() ?? 
@@ -34,7 +33,8 @@ namespace ZeroPlay.ViewModel
 		{
 			UserData.PropertyChanged += (object? sender, PropertyChangedEventArgs e) =>
 			{
-				switch (e.PropertyName) {
+				switch (e.PropertyName)
+				{
 					case nameof(UserData.UserId):
 						OnPropertyChanged(nameof(UidStr)); break;
 					case nameof(UserData.Signature):
@@ -49,21 +49,14 @@ namespace ZeroPlay.ViewModel
 			};
 		}
 
-		public UserDataModel UserData
-		{
-			get { return _userDataModel; }
-			private set
-			{
-				UserData = value;
-				OnPropertyChanged(nameof(UserData));
-			}
-		}
+		[ObservableProperty]
+		private UserDataModel userData = new UserDataModel();
 
 		public string UidStr => $"uid: {UserData.UserId}";
 		public string SignatureStr => $"个性签名: {UserData.Signature}";
-		public string FollowButtonContent => _userDataModel.IsFollow ? "取消关注" : "关注";
-		public string PostTabViewItemHeader => $"投稿({_userDataModel.PostedCount})";
-		public string FollowTabViewItemHeader => $"关注({_userDataModel.FollowCount})";
+		public string FollowButtonContent => UserData.IsFollow ? "取消关注" : "关注";
+		public string PostTabViewItemHeader => $"投稿({UserData.PostedCount})";
+		public string FollowTabViewItemHeader => $"关注({UserData.FollowCount})";
 
 		public bool RequestUserData(int uid, out string message)
 		{
@@ -87,19 +80,14 @@ namespace ZeroPlay.ViewModel
 			{
 				PostList.Add(new UserProfileVideoModel(post!));
 			}
-			//PostList.Add(
-			//	new UserProfileVideoModel()
-			//	{ 
-			//		CoverSrc = "http://20.121.121.231:8066/a55a881f1a666308d291a19d018baa07d6b84fd345fa86c57d04781a87243251.png?user_id=3",
-			//		Title = "111"
-			//	});
+			
 			return true;
 		}
 
 		public bool ToggleFollowUser(out string message)
 		{
 			if (!_clientService.TrySetFollow(
-				_userDataModel.UserId, _userDataShareModel.UserToken, !_userDataModel.IsFollow, out message))
+				UserData.UserId, _userDataShareModel.UserToken, !UserData.IsFollow, out message))
 			{
 				return false;
 			}

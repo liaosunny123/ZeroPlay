@@ -82,24 +82,24 @@
 				Grid.Column="1">
 				<TextBlock
 					Name="UserNameTextBlock"
-					Text="{x:Bind ViewModel.UserData.UserName}"
+					Text="{x:Bind ViewModel.UserData.UserName, Mode=OneWay}"
 					FontSize="24"
 					FontWeight="Bold"
 					/>
 				<TextBlock
 					Name="UserIdTextBlock"
-					Text="{x:Bind ViewModel.UidStr}"
+					Text="{x:Bind ViewModel.UidStr, Mode=OneWay}"
 					FontSize="12"
 					Opacity="0.8"/>
 				<TextBlock
 					Name="SignatureTextBlock"
-					Text="{x:Bind ViewModel.SignatureStr}"
+					Text="{x:Bind ViewModel.SignatureStr, Mode=OneWay}"
 					Opacity="0.8"
 					FontSize="12"/>
 			</StackPanel>
 
 			<Button Name="SubscribeButton"
-					Content="{x:Bind ViewModel.FollowButtonContent}"
+					Content="{x:Bind ViewModel.FollowButtonContent, Mode=OneWay}"
 					Click="OnSubscribeButtonClick"
 					HorizontalAlignment="Right"
 					Width="100"
@@ -118,13 +118,13 @@
 				 AllowDropTabs="False"
 				 Grid.Row="2">
 
-			<TabViewItem Header="{Binding PostTabViewItemHeader}"
-			 HorizontalContentAlignment="Center"
-			 IsClosable="False">
+			<TabViewItem Header="{x:Bind ViewModel.PostTabViewItemHeader, Mode=OneWay}"
+						 HorizontalContentAlignment="Center"
+						 IsClosable="False">
 				<ListView x:Name="CompositionList" 
-			  Margin="10"
-			  SelectionMode="None"
-			  ItemsSource="{Binding PostList}">
+						  Margin="10"
+						  SelectionMode="None"
+						  ItemsSource="{x:Bind ViewModel.PostList}">
 					<ListView.ItemTemplate>
 						<DataTemplate x:DataType="ref:UserDataModel">
 							<StackPanel Orientation="Horizontal">
@@ -137,13 +137,13 @@
 					</ListView.ItemTemplate>
 				</ListView>
 			</TabViewItem>
-			<TabViewItem Header="{Binding FollowTabViewItemHeader}"
+			<TabViewItem Header="{x:Bind ViewModel.FollowTabViewItemHeader}"
 						 HorizontalContentAlignment="Center"
 						 IsClosable="False">
 				<ListView x:Name="FollowList" 
 						  Margin="10"
 						  SelectionMode="None"
-						  ItemsSource="{Binding FollowList}">
+						  ItemsSource="{x:Bind ViewModel.FollowList}">
 					<ListView.ItemTemplate>
 						<DataTemplate x:DataType="ref:UserDataModel">
 							<StackPanel Orientation="Horizontal">
