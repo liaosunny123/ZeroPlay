@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "ZeroPlay": {
+      "commandName": "Project",
+      "workingDirectory": "C:\\Users\\forDece\\source\\repos\\ZeroPlay\\ZeroPlay"
+    },
+    "WSL": {
+      "commandName": "WSL2",
+      "distributionName": ""
+    }
+  }
+}
