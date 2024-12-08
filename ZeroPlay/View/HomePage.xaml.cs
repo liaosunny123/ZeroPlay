@@ -7,12 +7,15 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Media.Playback;
 using ZeroPlay.ViewModel;
+using static ZeroPlay.ViewModel.HomeViewModel;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -24,28 +27,74 @@ namespace ZeroPlay.View
     /// </summary>
     public sealed partial class HomePage : Page
     {
+        public HomeViewModel ViewModel { get; }
 
-        private HomeViewModel _viewModel;
+        private MediaPlayerElement _currentMediaPlayer;
 
         public HomePage()
         {
             this.InitializeComponent();
+            ViewModel = new HomeViewModel();
+        }
 
-            // 创建视图模型实例
-            _viewModel = new HomeViewModel();
-
-            // 设置页面的数据上下文为视图模型，方便进行数据绑定
-            this.DataContext = _viewModel;
-
-            // 使用BindingOperations.SetBinding来设置FlipView的ItemsSource绑定
-            BindingOperations.SetBinding(flipViewVertical, FlipView.ItemsSourceProperty, new Binding
+        private void VideoFlipView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // 停止之前的视频
+            if (_currentMediaPlayer != null)
             {
-                Path = new PropertyPath("MediaItems"),
-                Source = _viewModel
-            });
+                _currentMediaPlayer.MediaPlayer?.Pause();
+            }
+
+            // 获取当前选中项的MediaPlayerElement
+            var container = VideoFlipView.ContainerFromIndex(VideoFlipView.SelectedIndex) as FlipViewItem;
+            if (container != null)
+            {
+                _currentMediaPlayer = FindMediaPlayerElement(container);
+                if (_currentMediaPlayer != null)
+                {
+                    _currentMediaPlayer.MediaPlayer?.Play();
+                }
+            }
+        }
+
+        private void MediaPlayer_Loaded(object sender, RoutedEventArgs e)
+        {
+            var mediaPlayer = sender as MediaPlayerElement;
+            if (mediaPlayer != null && VideoFlipView.SelectedItem == mediaPlayer.DataContext)
+            {
+                _currentMediaPlayer = mediaPlayer;
+                mediaPlayer.MediaPlayer?.Play();
+            }
+        }
+
+        private void MediaPlayer_Unloaded(object sender, RoutedEventArgs e)
+        {
+            var mediaPlayer = sender as MediaPlayerElement;
+            if (mediaPlayer != null)
+            {
+                mediaPlayer.MediaPlayer?.Pause();
+                mediaPlayer.MediaPlayer?.Dispose();
+            }
+        }
+
+        private MediaPlayerElement FindMediaPlayerElement(DependencyObject parent)
+        {
+            var childCount = VisualTreeHelper.GetChildrenCount(parent);
+            for (int i = 0; i < childCount; i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+                if (child is MediaPlayerElement mediaPlayer)
+                {
+                    return mediaPlayer;
+                }
+                var result = FindMediaPlayerElement(child);
+                if (result != null)
+                {
+                    return result;
+                }
+            }
+            return null;
         }
     }
-
-    // 定义一个简单的数据项类，用于存储每个FlipView展示项对应的图像和名称信息
 
 }

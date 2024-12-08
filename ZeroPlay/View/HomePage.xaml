@@ -9,32 +9,40 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-        <TextBlock Text="Welcome to ZeroPlay" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36"/>
-        <FlipView x:Name="flipViewVertical" Width="480" Height="270" 
-          BorderBrush="Black" BorderThickness="1">
-
-            <!-- Use a vertical stack panel for vertical flipping. -->
-            <FlipView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <VirtualizingStackPanel Orientation="Vertical"/>
-                </ItemsPanelTemplate>
-            </FlipView.ItemsPanel>
-
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <FlipView x:Name="VideoFlipView"
+                  ItemsSource="{x:Bind ViewModel.Videos}"
+                  SelectedIndex="{x:Bind ViewModel.CurrentIndex, Mode=TwoWay}"
+                  SelectionChanged="VideoFlipView_SelectionChanged"
+                  VerticalAlignment="Stretch"
+                  HorizontalAlignment="Stretch">
             <FlipView.ItemTemplate>
                 <DataTemplate>
                     <Grid>
-                        <Image Width="480" Height="270" Stretch="UniformToFill"
-                       Source="{Binding Image}"/>
-                        <Border Background="#A5000000" Height="80" VerticalAlignment="Bottom">
-                            <TextBlock Text="{Binding Name}" 
-                               FontFamily="Segoe UI" FontSize="26.667" 
-                               Foreground="#CCFFFFFF" Padding="15,20"/>
-                        </Border>
+                        <MediaPlayerElement x:Name="MediaPlayer"
+                                          AreTransportControlsEnabled="True"
+                                          Source="{Binding VideoUri}"
+                                          Loaded="MediaPlayer_Loaded"
+                                          Unloaded="MediaPlayer_Unloaded"
+                                          AutoPlay="True"
+                                          Stretch="UniformToFill"/>
+
+                        <!-- 视频信息覆盖层 -->
+                        <StackPanel VerticalAlignment="Bottom"
+                                  Margin="20,0,20,80"
+                                  Padding="10">
+                            <TextBlock Text="{Binding Title}"
+                                     Style="{ThemeResource TitleTextBlockStyle}"
+                                     Foreground="White"/>
+                            <TextBlock Text="{Binding Description}"
+                                     Style="{ThemeResource BodyTextBlockStyle}"
+                                     Foreground="White"
+                                     Margin="0,8,0,0"/>
+                        </StackPanel>
                     </Grid>
                 </DataTemplate>
-                        <MediaPlayerElement x:Name="playerElement1" Width="480" Height="270" 
             </FlipView.ItemTemplate>
         </FlipView>
     </Grid>
 </Page>
+

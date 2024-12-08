@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Microsoft.UI.Xaml.Controls;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -8,45 +10,48 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Media.Core;
+using Windows.Media.Playback;
 
 namespace ZeroPlay.ViewModel
 {
-    public class HomeViewModel : INotifyPropertyChanged
+    public partial class HomeViewModel : ObservableObject
     {
-        private ObservableCollection<MediaItem> _mediaItems;
-        public ObservableCollection<MediaItem> MediaItems
-        {
-            get { return _mediaItems; }
-            set
-            {
-                _mediaItems = value;
-                OnPropertyChanged();
-            }
-        }
+        [ObservableProperty]
+        private ObservableCollection<VideoItem> videos;
+
+        [ObservableProperty]
+        private int currentIndex;
 
         public HomeViewModel()
         {
-            // 初始化数据集合并添加示例数据
-            MediaItems = new ObservableCollection<MediaItem>();
+            // 初始化视频列表，这里先用测试数据
+            this.videos = new ObservableCollection<VideoItem>
+            {
+                new VideoItem
+                {
+                    VideoUri = MediaSource.CreateFromUri(new Uri("C:\\Users\\forDece\\source\\repos\\ZeroPlay\\ZeroPlay\\Assets\\video1.mp4")),
+                    Title = "Video 1",
+                    Description = "Description 1"
+                },
+                new VideoItem
+                {
+                    VideoUri =  MediaSource.CreateFromUri(new Uri("C:\\Users\\forDece\\source\\repos\\ZeroPlay\\ZeroPlay\\Assets\\video1.mp4")),
+                    Title = "Video 2",
+                    Description = "Description 2"
+                },
+                // 可以添加更多测试数据
+            };
 
-            string pathPrefix = "C:\\Users\\forDece\\source\\repos\\ZeroPlay\\ZeroPlay\\";
-
-            MediaItems.Add(new MediaItem { Image = pathPrefix + "Assets/video1.mp4", Name = "First Media" });
-            MediaItems.Add(new MediaItem { Image = pathPrefix + "Assets/img1.png", Name = "Second Media" });
+            currentIndex = 0;
         }
+    }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public class MediaItem
-        {
-            public string Image { get; set; }
-            public string Name { get; set; }
-        }
-
+    public class VideoItem
+    {
+        public MediaSource VideoUri { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
     }
 }
+
