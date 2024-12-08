@@ -75,6 +75,13 @@ namespace ZeroPlay
 
                         NavigationContentFrame.Content = App.GetRequiredService<ProfilePage>();
                         break;
+                        //comment
+                    case "CommentPage":
+                        NavigationContentFrame.Content = App.GetRequiredService<CommentPage>();
+                        break;
+                    case "ChatPage":
+                        NavigationContentFrame.Content = App.GetRequiredService<ChatPage>();
+                        break;
                     default:
                         break;
                 }
