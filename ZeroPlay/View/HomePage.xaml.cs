@@ -39,7 +39,7 @@ namespace ZeroPlay.View
 
         private void VideoFlipView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // 停止之前的视频
+            // 停止之前的视频1
             //if (_currentMediaPlayer != null)
             //{
             //    _currentMediaPlayer.MediaPlayer?.Pause();
