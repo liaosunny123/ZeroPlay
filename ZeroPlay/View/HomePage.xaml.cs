@@ -82,11 +82,11 @@ namespace ZeroPlay.View
             var mediaPlayer = sender as MediaPlayerElement;
             if (mediaPlayer != null)
             {
-                //mediaPlayer.MediaPlayer?.Pause();
+                mediaPlayer.MediaPlayer?.Pause();
 
-                var m = new MediaPlayer();
-                m.SetUriSource(new Uri("C:\\Users\\forDece\\source\\repos\\ZeroPlay\\ZeroPlay\\Assets\\video1.mp4"));
-                mediaPlayer.SetMediaPlayer(m);
+                //var m = new MediaPlayer();
+                //m.SetUriSource(new Uri("C:\\Users\\forDece\\source\\repos\\ZeroPlay\\ZeroPlay\\Assets\\video1.mp4"));
+                //mediaPlayer.SetMediaPlayer(m);
                 //mediaPlayer.MediaPlayer = ;
 
                 //mediaPlayer.MediaPlayer?.Dispose();
