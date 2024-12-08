@@ -33,6 +33,7 @@
                         </Border>
                     </Grid>
                 </DataTemplate>
+                        <MediaPlayerElement x:Name="playerElement1" Width="480" Height="270" 
             </FlipView.ItemTemplate>
         </FlipView>
     </Grid>
