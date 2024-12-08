@@ -11,8 +11,6 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <FlipView x:Name="VideoFlipView"
-                  ItemsSource="{x:Bind ViewModel.Videos}"
-                  SelectedIndex="{x:Bind ViewModel.CurrentIndex, Mode=TwoWay}"
                   SelectionChanged="VideoFlipView_SelectionChanged"
                   VerticalAlignment="Stretch"
                   HorizontalAlignment="Stretch">

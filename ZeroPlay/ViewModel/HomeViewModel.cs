@@ -23,6 +23,9 @@ namespace ZeroPlay.ViewModel
         [ObservableProperty]
         private int currentIndex;
 
+        public static string VideoFilePath = "C:\\Users\\forDece\\source\\repos\\ZeroPlay\\ZeroPlay\\Assets\\video1.mp4";
+
+
         public HomeViewModel()
         {
             // 初始化视频列表，这里先用测试数据
@@ -30,13 +33,13 @@ namespace ZeroPlay.ViewModel
             {
                 new VideoItem
                 {
-                    VideoUri = MediaSource.CreateFromUri(new Uri("C:\\Users\\forDece\\source\\repos\\ZeroPlay\\ZeroPlay\\Assets\\video1.mp4")),
+                    VideoUri = MediaSource.CreateFromUri(new Uri(VideoFilePath)),
                     Title = "Video 1",
                     Description = "Description 1"
                 },
                 new VideoItem
                 {
-                    VideoUri =  MediaSource.CreateFromUri(new Uri("C:\\Users\\forDece\\source\\repos\\ZeroPlay\\ZeroPlay\\Assets\\video1.mp4")),
+                    VideoUri =  MediaSource.CreateFromUri(new Uri(VideoFilePath)),
                     Title = "Video 2",
                     Description = "Description 2"
                 },
@@ -44,6 +47,16 @@ namespace ZeroPlay.ViewModel
             };
 
             currentIndex = 0;
+        }
+
+        public void AddVideo(VideoItem video)
+        {
+            this.Videos.Add(video);
+        }
+
+        public int GetSize()
+        {
+            return this.Videos.Count;
         }
     }
 

@@ -22,6 +22,7 @@ using static ZeroPlay.ViewModel.HomeViewModel;
 
 namespace ZeroPlay.View
 {
+
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
@@ -35,16 +36,48 @@ namespace ZeroPlay.View
         {
             this.InitializeComponent();
             ViewModel = new HomeViewModel();
+
+            //VideoFlipView.Items.Add(new VideoItem
+            //{
+            //    VideoUri = Windows.Media.Core.MediaSource.CreateFromUri(new Uri("C:\\Users\\forDece\\source\\repos\\ZeroPlay\\ZeroPlay\\Assets\\video1.mp4")),
+            //    Title = "Video 1",
+            //    Description = "Description 1"
+            //});
+
+            ViewModel.AddVideo(new VideoItem
+            {
+                VideoUri = Windows.Media.Core.MediaSource.CreateFromUri(new Uri(VideoFilePath)),
+                Title = "Video " + (ViewModel.GetSize() + 1),
+                Description = "Description " + (ViewModel.GetSize() + 1)
+            });
+
+            VideoFlipView.ItemsSource = ViewModel.Videos;
+
         }
 
         private void VideoFlipView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // 停止之前的视频1
+            // 停止之前的视频
             //if (_currentMediaPlayer != null)
             //{
             //    _currentMediaPlayer.MediaPlayer?.Pause();
             //}
             _currentMediaPlayer?.Pause();
+
+            //var curIdx = VideoFlipView.SelectedIndex;
+            //if (curIdx >= 0 && curIdx + 1 >= ViewModel.GetSize())
+            //{
+
+            //    Debug.WriteLine("add.........");
+            //    ViewModel.AddVideo(new VideoItem
+            //    {
+            //        VideoUri = Windows.Media.Core.MediaSource.CreateFromUri(new Uri(VideoFilePath)),
+            //        Title = "Video " + (ViewModel.GetSize() + 1),
+            //        Description = "Description " + (ViewModel.GetSize() + 1)
+            //    });
+            //};
+
+
 
 
             // 获取当前选中项的MediaPlayerElement
@@ -84,7 +117,7 @@ namespace ZeroPlay.View
             {
                 mediaPlayer.MediaPlayer?.Pause();
 
-                //var m = new MediaPlayer();
+                var m = new MediaPlayer();
                 //m.SetUriSource(new Uri("C:\\Users\\forDece\\source\\repos\\ZeroPlay\\ZeroPlay\\Assets\\video1.mp4"));
                 //mediaPlayer.SetMediaPlayer(m);
                 //mediaPlayer.MediaPlayer = ;
