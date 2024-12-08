@@ -29,7 +29,7 @@ namespace ZeroPlay.View
     {
         public HomeViewModel ViewModel { get; }
 
-        private MediaPlayerElement _currentMediaPlayer;
+        private MediaPlayer _currentMediaPlayer;
 
         public HomePage()
         {
@@ -40,30 +40,40 @@ namespace ZeroPlay.View
         private void VideoFlipView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             // 停止之前的视频
-            if (_currentMediaPlayer != null)
-            {
-                _currentMediaPlayer.MediaPlayer?.Pause();
-            }
+            //if (_currentMediaPlayer != null)
+            //{
+            //    _currentMediaPlayer.MediaPlayer?.Pause();
+            //}
+            _currentMediaPlayer?.Pause();
+
 
             // 获取当前选中项的MediaPlayerElement
             var container = VideoFlipView.ContainerFromIndex(VideoFlipView.SelectedIndex) as FlipViewItem;
             if (container != null)
             {
-                _currentMediaPlayer = FindMediaPlayerElement(container);
+                _currentMediaPlayer = FindMediaPlayerElement(container)?.MediaPlayer;
                 if (_currentMediaPlayer != null)
                 {
-                    _currentMediaPlayer.MediaPlayer?.Play();
+
+                    //_currentMediaPlayer.MediaPlayer?.Pause();
+                    _currentMediaPlayer?.Play();
                 }
             }
         }
 
         private void MediaPlayer_Loaded(object sender, RoutedEventArgs e)
         {
+
             var mediaPlayer = sender as MediaPlayerElement;
             if (mediaPlayer != null && VideoFlipView.SelectedItem == mediaPlayer.DataContext)
             {
-                _currentMediaPlayer = mediaPlayer;
-                mediaPlayer.MediaPlayer?.Play();
+                _currentMediaPlayer = mediaPlayer.MediaPlayer;
+
+                if (VideoFlipView.SelectedIndex == 0)
+                {
+                    mediaPlayer.MediaPlayer.Play();
+                }
+                //mediaPlayer.MediaPlayer?.Pause();
             }
         }
 
@@ -72,8 +82,14 @@ namespace ZeroPlay.View
             var mediaPlayer = sender as MediaPlayerElement;
             if (mediaPlayer != null)
             {
-                mediaPlayer.MediaPlayer?.Pause();
-                mediaPlayer.MediaPlayer?.Dispose();
+                //mediaPlayer.MediaPlayer?.Pause();
+
+                var m = new MediaPlayer();
+                m.SetUriSource(new Uri("C:\\Users\\forDece\\source\\repos\\ZeroPlay\\ZeroPlay\\Assets\\video1.mp4"));
+                mediaPlayer.SetMediaPlayer(m);
+                //mediaPlayer.MediaPlayer = ;
+
+                //mediaPlayer.MediaPlayer?.Dispose();
             }
         }
 

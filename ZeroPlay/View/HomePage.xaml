@@ -20,11 +20,10 @@
                 <DataTemplate>
                     <Grid>
                         <MediaPlayerElement x:Name="MediaPlayer"
-                                          AreTransportControlsEnabled="True"
                                           Source="{Binding VideoUri}"
                                           Loaded="MediaPlayer_Loaded"
                                           Unloaded="MediaPlayer_Unloaded"
-                                          AutoPlay="True"
+                                          AutoPlay="False"
                                           Stretch="UniformToFill"/>
 
                         <!-- 视频信息覆盖层 -->
