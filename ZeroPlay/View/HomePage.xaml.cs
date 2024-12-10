@@ -90,7 +90,6 @@ namespace ZeroPlay.View
         {
             var button = sender as Button;
 
-            // 创建 CommentDialog
             var dialog = new ContentDialog()
             {
                 Title = "视频评论",
