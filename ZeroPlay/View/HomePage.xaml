@@ -65,7 +65,7 @@
                                      Padding="10"
                                     >
                                 <!--头像区域-->
-                                <Border
+                                <!--<Border
 				                            Name="AuthorAvatar"
 				                            CornerRadius="50"
 				                            Margin="0,8,0,0"
@@ -82,29 +82,30 @@
 				                        Name="AvatarImage"
 				                        Stretch="UniformToFill"
 				                        Source="{Binding AuthorAvatar}"/>
-                                </Border>
+                                </Border>-->
 
                                 <!-- 查看主页 -->
-                                <Button x:Name="ProfileButton"
-                                        Click="LikeButton_Click"
-                                        Margin="0,8,0,0"
-                                        Foreground="White"
-                                        Background="Gray"
-                                        BorderBrush="Gray"
-                                   
-                                >
-                                    <!--Foreground="Black"-->
+								<Border
+									Name="AuthorAvatar"
+									CornerRadius="50"
+									Margin="0,8,0,0"
+									Height="50"
+									Width="50"
+									Background="Gray"
+									BorderBrush="Gray"
+									BorderThickness="0"
+									Grid.Row="0"
+									Grid.Column="0"
+									Grid.RowSpan="2"
+									Tapped="AuthorAvatar_Tapped">
 
-                                    <Button.Content>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="查看主页" Margin="8,0,0,0"
-                                                   
-                                                   SelectionHighlightColor="White"/>
-                                        </StackPanel>
-                                    </Button.Content>
-                                </Button>
+									<Image
+										Name="AvatarImage"
+										Stretch="UniformToFill"
+										Source="{Binding AuthorAvatar}"/>
+								</Border>
 
-                                <!-- 点赞功能部分 -->
+								<!-- 点赞功能部分 -->
                                 <Button x:Name="LikeButton"
                                         Click="LikeButton_Click"
                                         Margin="0,8,0,0"

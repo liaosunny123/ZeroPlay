@@ -21,6 +21,7 @@ using ZeroPlay.Interface;
 using ZeroPlay.Model;
 using ZeroPlay.Service;
 using ZeroPlay.ViewModel;
+using ZeroPlay.ShareModel;
 using static ZeroPlay.ViewModel.HomeViewModel;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -38,7 +39,12 @@ namespace ZeroPlay.View
 
         private MediaPlayer _currentMediaPlayer;
 
-        public HomePage()
+		private Action _changeToProfile;
+
+		private UserDataShareModel _userDataShareModel = App.GetRequiredService<UserDataShareModel>() ??
+			throw new ApplicationException("Can not load user data resource.");
+
+		public HomePage()
         {
             this.InitializeComponent();
 
@@ -70,6 +76,11 @@ namespace ZeroPlay.View
 
         }
 
+		public void InitDelegate(Action action)
+		{
+			_changeToProfile = action;
+		}
+
         private void FetchVideo()
         {
             var client = App.GetRequiredService<IZeroPlayService>();
@@ -78,19 +89,19 @@ namespace ZeroPlay.View
             {
                 list.ForEach(video =>
                 {
-                    ViewModel.Videos.Add(new VideoItem
-                    {
-                        LikeNumStr = $"{video.FavoriteCount}点赞",
-                        CommentNumStr = $"{video.CommentCount}评论",
-                        Title = video.Title,
-                        Description = video.Author.Name,
-                        //VideoUri = MediaSource.CreateFromUri(new Uri(video.PlayUrl)),
-                        PlayUrl = video.PlayUrl,
-                        AuthorAvatar = new BitmapImage(new Uri(video.Author.Avatar)),
-                        AuthorName = "@" + video.Author.Name
+					ViewModel.Videos.Add(new VideoItem
+					{
+						LikeNumStr = $"{video.FavoriteCount}点赞",
+						CommentNumStr = $"{video.CommentCount}评论",
+						Title = video.Title,
+						Description = video.Author.Name,
+						//VideoUri = MediaSource.CreateFromUri(new Uri(video.PlayUrl)),
+						PlayUrl = video.PlayUrl,
+						AuthorAvatar = new BitmapImage(new Uri(video.Author.Avatar)),
+						AuthorName = "@" + video.Author.Name,
+						AuthorId = video.Author.Id
 
-
-                    });
+					});
 
                     foreach (var item in ViewModel.Videos)
                     {
@@ -299,6 +310,30 @@ namespace ZeroPlay.View
             }
             return null;
         }
-    }
+
+		private void ProfileButton_Click(object sender, RoutedEventArgs e)
+		{
+			if (!_userDataShareModel.IsLogin)
+			{
+				return;
+			}
+			var profileViewModel = App.GetRequiredService<ProfileViewModel>()!;
+			int id = (int)ViewModel.Videos[VideoFlipView.SelectedIndex].AuthorId;
+			profileViewModel.RequestUserData(id, out _);
+			_changeToProfile();
+		}
+
+		private void AuthorAvatar_Tapped(object sender, TappedRoutedEventArgs e)
+		{
+			if (!_userDataShareModel.IsLogin)
+			{
+				return;
+			}
+			var profileViewModel = App.GetRequiredService<ProfileViewModel>()!;
+			int id = (int)ViewModel.Videos[VideoFlipView.SelectedIndex].AuthorId;
+			profileViewModel.RequestUserData(id, out _);
+			_changeToProfile();
+		}
+	}
 
 }

@@ -137,7 +137,7 @@
 					</ListView.ItemTemplate>
 				</ListView>
 			</TabViewItem>
-			<TabViewItem Header="{x:Bind ViewModel.FollowTabViewItemHeader}"
+			<TabViewItem Header="{x:Bind ViewModel.FollowTabViewItemHeader, Mode=OneWay}"
 						 HorizontalContentAlignment="Center"
 						 IsClosable="False">
 				<ListView x:Name="FollowList" 

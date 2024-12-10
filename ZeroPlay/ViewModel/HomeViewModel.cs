@@ -88,6 +88,8 @@ namespace ZeroPlay.ViewModel
 
         public string AuthorName { get; set; }
 
+		public ulong AuthorId { get; set; }
+
     }
 }
 
