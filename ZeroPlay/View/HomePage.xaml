@@ -28,17 +28,7 @@
             <FlipView.ItemTemplate>
                 <DataTemplate>
                     <Grid>
-                        <!--<MediaPlayerElement x:Name="MediaPlayer"
-                                          Source="{Binding VideoUri}"
-                                          Loaded="MediaPlayer_Loaded"
-                                          Unloaded="MediaPlayer_Unloaded"
-                                          AutoPlay="False"
-                                          Stretch="UniformToFill"
-                                            />-->
-
                         <Grid>
-
-                            <!-- 这里使用Grid的两列布局来放置两个WebView2 -->
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="2*"/>
                                 <ColumnDefinition Width="1*"/>
@@ -52,9 +42,9 @@
                                            HorizontalAlignment="Stretch"
                                            VerticalAlignment="Stretch"
                                            Grid.Column="0"  
-                                            MinHeight="200"
+                                           MinHeight="200"
                                            MinWidth="200"
-                                               Loaded="WebView2_Loaded"
+                                           Loaded="WebView2_Loaded"
                                                />
 
 

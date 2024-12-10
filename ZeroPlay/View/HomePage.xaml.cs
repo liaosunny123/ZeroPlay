@@ -41,33 +41,9 @@ namespace ZeroPlay.View
         public HomePage()
         {
             this.InitializeComponent();
-
-            //var mediaPlayer = new MediaPlayer();
-            //mediaPlayer.Source = MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/example_video.mkv"));
-            //mediaPlayer.Play();
-
             ViewModel = new HomeViewModel();
 
             FetchVideo();
-
-
-            //VideoFlipView.Items.Add(new VideoItem
-            //{
-            //    VideoUri = Windows.Media.Core.MediaSource.CreateFromUri(new Uri("C:\\Users\\forDece\\source\\repos\\ZeroPlay\\ZeroPlay\\Assets\\video1.mp4")),
-            //    Title = "Video 1",
-            //    Description = "Description 1"
-            //});
-
-            //ViewModel.AddVideo(new VideoItem
-            //{
-            //    VideoUri = Windows.Media.Core.MediaSource.CreateFromUri(new Uri(VideoFilePath)),
-            //    Title = "Video " + (ViewModel.GetSize() + 1),
-            //    Description = "Description " + (ViewModel.GetSize() + 1)
-            //});
-
-
-            //VideoFlipView.ItemsSource = ViewModel.Videos;
-
         }
 
         private void FetchVideo()
@@ -76,56 +52,45 @@ namespace ZeroPlay.View
 
             if (client!.TryFetchVideo(out List<VideoResp> list))
             {
-                list.ForEach(video =>
+                foreach (var video in list)
                 {
-                    ViewModel.Videos.Add(new VideoItem
+                    DispatcherQueue.TryEnqueue(() =>
                     {
-                        LikeNumStr = $"{video.FavoriteCount}点赞",
-                        CommentNumStr = $"{video.CommentCount}评论",
-                        Title = video.Title,
-                        Description = video.Author.Name,
-                        //VideoUri = MediaSource.CreateFromUri(new Uri(video.PlayUrl)),
-                        PlayUrl = video.PlayUrl,
-                        AuthorAvatar = new BitmapImage(new Uri(video.Author.Avatar)),
-                        AuthorName = "@" + video.Author.Name
-
-
+                        ViewModel.Videos.Add(new VideoItem
+                        {
+                            LikeNumStr = $"{video.FavoriteCount}点赞",
+                            CommentNumStr = $"{video.CommentCount}评论",
+                            Title = video.Title,
+                            Description = video.Author.Name,
+                            PlayUrl = video.PlayUrl,
+                            AuthorAvatar = new BitmapImage(new Uri(video.Author.Avatar)),
+                            AuthorName = "@" + video.Author.Name
+                        });
                     });
-
-                    foreach (var item in ViewModel.Videos)
-                    {
-                        Debug.WriteLine(item.PlayUrl);
-                        Debug.WriteLine(item.Title);
-                    }
-                });
+                }
             }
-
-
-
-
         }
 
 
         private async static void FullScreenAndPlayVideoInWebView2(WebView2 webView2)
         {
+            await webView2.EnsureCoreWebView2Async(null);
             // 执行JavaScript代码来触发视频自动播放，不同视频网站或视频嵌入方式可能代码略有不同，以下是通用示例
             await webView2.CoreWebView2.ExecuteScriptAsync("var videos = document.getElementsByTagName('video');if (videos[0])videos[0].requestFullscreen()&&videos[0].play();");
         }
 
         private void VideoFlipView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            var container = 
+                VideoFlipView.ContainerFromIndex(VideoFlipView.SelectedIndex) as FlipViewItem;
 
-            //return;
-            Debug.WriteLine("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-
-
-            // 停止之前的视频
-            //_currentMediaPlayer?.Pause();
-
-            var container = VideoFlipView.ContainerFromIndex(VideoFlipView.SelectedIndex) as FlipViewItem;
             if (container != null)
             {
+               
                 var view2 = FindWebView2(container);
+                view2.Source = new Uri(ViewModel.Videos[VideoFlipView.SelectedIndex].PlayUrl);
+
+
                 FullScreenAndPlayVideoInWebView2(view2);
             }
 
@@ -180,6 +145,7 @@ namespace ZeroPlay.View
         {
 
             var webView2 = sender as WebView2;
+
             if (webView2 != null && VideoFlipView.SelectedItem == webView2.DataContext)
             {
                 // 将首个视频全屏
@@ -262,7 +228,6 @@ namespace ZeroPlay.View
 
         private WebView2 FindWebView2(DependencyObject parent)
         {
-
             var childCount = VisualTreeHelper.GetChildrenCount(parent);
             for (int i = 0; i < childCount; i++)
             {
