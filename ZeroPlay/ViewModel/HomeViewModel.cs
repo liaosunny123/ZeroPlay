@@ -72,6 +72,8 @@ namespace ZeroPlay.ViewModel
     {
         public MediaSource VideoUri { get; set; }
 
+        public string VideoId { get; set; }
+
         public string PlayUrl { get; set; }
 
         public string LikeNumStr { get; set; }
@@ -82,6 +84,8 @@ namespace ZeroPlay.ViewModel
 
         public string Title { get; set; }
         public string Description { get; set; }
+
+        public ulong AuthorId { get; set; }
 
         public ImageSource AuthorAvatar { get; set; }
 
