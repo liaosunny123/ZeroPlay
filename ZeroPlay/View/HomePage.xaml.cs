@@ -22,6 +22,7 @@ using ZeroPlay.Interface;
 using ZeroPlay.Model;
 using ZeroPlay.Service;
 using ZeroPlay.ViewModel;
+using ZeroPlay.ShareModel;
 using static ZeroPlay.ViewModel.HomeViewModel;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -39,13 +40,23 @@ namespace ZeroPlay.View
 
         private MediaPlayer _currentMediaPlayer;
 
-        public HomePage()
+		private Action _changeToProfile;
+
+		private UserDataShareModel _userDataShareModel = App.GetRequiredService<UserDataShareModel>() ??
+			throw new ApplicationException("Can not load user data resource.");
+
+		public HomePage()
         {
             this.InitializeComponent();
             ViewModel = new HomeViewModel();
 
             FetchVideo();
         }
+
+		public void InitDelegate(Action action)
+		{
+			_changeToProfile = action;
+		}
 
         private void FetchVideo()
         {
@@ -301,6 +312,30 @@ namespace ZeroPlay.View
             }
             return null;
         }
-    }
+
+		private void ProfileButton_Click(object sender, RoutedEventArgs e)
+		{
+			if (!_userDataShareModel.IsLogin)
+			{
+				return;
+			}
+			var profileViewModel = App.GetRequiredService<ProfileViewModel>()!;
+			int id = (int)ViewModel.Videos[VideoFlipView.SelectedIndex].AuthorId;
+			profileViewModel.RequestUserData(id, out _);
+			_changeToProfile();
+		}
+
+		private void AuthorAvatar_Tapped(object sender, TappedRoutedEventArgs e)
+		{
+			if (!_userDataShareModel.IsLogin)
+			{
+				return;
+			}
+			var profileViewModel = App.GetRequiredService<ProfileViewModel>()!;
+			int id = (int)ViewModel.Videos[VideoFlipView.SelectedIndex].AuthorId;
+			profileViewModel.RequestUserData(id, out _);
+			_changeToProfile();
+		}
+	}
 
 }

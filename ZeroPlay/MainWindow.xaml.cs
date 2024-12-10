@@ -20,6 +20,7 @@ using ZeroPlay.Interface;
 using ZeroPlay.ShareModel;
 using ZeroPlay.View;
 using System.Text.Json.Nodes;
+using Windows.Gaming.Input;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -38,12 +39,13 @@ namespace ZeroPlay
             // 使用自己的 Title Bar
             ExtendsContentIntoTitleBar = true;
             SetTitleBar(AppTitleBar);
-        }
+			App.GetRequiredService<HomePage>()!.InitDelegate(ChangeToOtherProfile);
+		}
 
         private UserDataShareModel UserData => App.GetRequiredService<UserDataShareModel>() ?? 
             throw new ApplicationException("Can not load user data resource.");
 
-        private async void NavigateController_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+        private async void NavigateController_SelectionChanged(NavigationView sender, NavigationViewItemInvokedEventArgs args)
         {
             // 判断预先设置的页面
             if (NavigateController.SelectedItem == NavigateController.SettingsItem)
@@ -156,5 +158,10 @@ namespace ZeroPlay
             UserData.IsLogin = true;
             return true;
         }
-    }
+
+		public void ChangeToOtherProfile()
+		{
+			NavigationContentFrame.Content = App.GetRequiredService<ProfilePage>();
+		}
+	}
 }

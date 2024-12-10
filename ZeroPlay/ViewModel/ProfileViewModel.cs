@@ -86,12 +86,17 @@ namespace ZeroPlay.ViewModel
 
 		public bool ToggleFollowUser(out string message)
 		{
+			if(!_userDataShareModel.IsLogin)
+			{
+				message = "您尚未登录!";
+				return false;
+			}
 			if (!_clientService.TrySetFollow(
 				UserData.UserId, _userDataShareModel.UserToken, !UserData.IsFollow, out message))
 			{
 				return false;
 			}
-			return true;
+			return RequestUserData(UserData.UserId, out message);
 		}
     }
 }
