@@ -18,6 +18,7 @@ using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using ZeroPlay.Interface;
+using ZeroPlay.Model;
 using ZeroPlay.Service;
 using ZeroPlay.ShareModel;
 using ZeroPlay.View;
