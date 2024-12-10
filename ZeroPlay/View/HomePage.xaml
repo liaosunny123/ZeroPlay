@@ -7,6 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:controls="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:controls1="using:ImageEx"
+        xmlns:controls2="using:ZeroPlay.Control"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -28,20 +29,10 @@
             <FlipView.ItemTemplate>
                 <DataTemplate>
                     <Grid>
-                        <!--<MediaPlayerElement x:Name="MediaPlayer"
-                                          Source="{Binding VideoUri}"
-                                          Loaded="MediaPlayer_Loaded"
-                                          Unloaded="MediaPlayer_Unloaded"
-                                          AutoPlay="False"
-                                          Stretch="UniformToFill"
-                                            />-->
-
                         <Grid>
-
-                            <!-- 这里使用Grid的两列布局来放置两个WebView2 -->
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="*"/>
+                                <!--<ColumnDefinition Width="1*"/>-->
 
                             </Grid.ColumnDefinitions>
 
@@ -52,9 +43,9 @@
                                            HorizontalAlignment="Stretch"
                                            VerticalAlignment="Stretch"
                                            Grid.Column="0"  
-                                            MinHeight="200"
+                                           MinHeight="200"
                                            MinWidth="200"
-                                               Loaded="WebView2_Loaded"
+                                           Loaded="WebView2_Loaded"
                                                />
 
 
@@ -132,7 +123,7 @@
 
                                 <!-- 评论功能部分 -->
                                 <Button x:Name="CommentButton"
-                                        Click="LikeButton_Click"
+                                        Click="CommentButton_Click"
                                         Margin="0,20,0,0"
                                         Foreground="White"
                                         Background="Gray"
@@ -153,11 +144,24 @@
 
                             </StackPanel>
 
-                            <TextBlock Text="{Binding Description}"
+                            <!--<TextBlock Text="{Binding Description}"
                                      Style="{ThemeResource BodyTextBlockStyle}"
                                         Grid.Column="1" 
                                      Foreground="White"
-                                     Margin="0,8,0,0"/>
+                                     Margin="0,8,0,0"/>-->
+
+                            <!--<StackPanel HorizontalAlignment="Center" 
+                                        Grid.Column="1"
+                                        VerticalAlignment="Center" 
+                                        Spacing="16">
+                                -->
+                            <!-- 其他控件，如视频播放器 -->
+
+                            <!-- 评论控件 -->
+                            <!--
+                                <controls2:CommentControl VideoId="{Binding VideoId}"/>
+                            </StackPanel>-->
+
 
                         </Grid>
 

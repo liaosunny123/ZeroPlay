@@ -44,6 +44,7 @@ namespace ZeroPlay
         /// </summary>
         public App()
         {
+
             this.InitializeComponent();
 
             // Configure Host for Dependency Injection
@@ -55,16 +56,24 @@ namespace ZeroPlay
                        services.AddSingleton<HomePage, HomePage>();
                        services.AddSingleton<SettingsPage, SettingsPage>();
                        services.AddSingleton<ProfilePage, ProfilePage>();
+                       services.AddSingleton<CommentTestPage, CommentTestPage>();
+                       services.AddSingleton<ChatPage, ChatPage>();
+
 
                        // ViewModel
                        services.AddSingleton<HomeViewModel, HomeViewModel>();
                        services.AddSingleton<ProfileViewModel, ProfileViewModel>();
+                       services.AddSingleton<CommentTestViewModel, CommentTestViewModel>();
+                       services.AddSingleton<ChatViewModel, ChatViewModel>();
+
 
                        // ShareModel
                        services.AddSingleton<UserDataShareModel, UserDataShareModel>();
 
                        // Service
                        services.AddSingleton<IZeroPlayService, ZeroPlayClient>();
+                       services.AddSingleton<ICommentService, CommentClient>();
+                       services.AddSingleton<IChatService, ChatClient>();
                    })
                    .Build();
         }

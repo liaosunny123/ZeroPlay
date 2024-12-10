@@ -10,6 +10,7 @@
 
     <TabView
         IsAddTabButtonVisible="False"
+        CanDrag="False"
         >
         <!-- 登录 Tab -->
         <TabViewItem 

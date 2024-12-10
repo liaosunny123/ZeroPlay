@@ -105,7 +105,122 @@ namespace ZeroPlay.Service
                 return false;
             }
 
-            message = respJson["token"]!.GetValue<string>();
+            message = respJson.ToString();
+            return true;
+        }
+
+        public bool TryGetUserData(int uid, string token, out string message)
+        {
+            var req = new RestRequest("/douyin/user/", Method.Get)
+                .AddQueryParameter("user_id", uid)
+                .AddQueryParameter("token", token);
+            var resp = client.Execute(req);
+
+            if (!resp.IsSuccessStatusCode)
+            {
+                message = "Request to Zeroplay is not successful, check your network environment please.";
+                return false;
+            }
+
+            if (resp.Content is null || String.IsNullOrWhiteSpace(resp.Content))
+            {
+                message = "Unexpected Zeroplay response, please wait for a minute and try again.";
+                return false;
+            }
+
+            var respJson = JsonNode.Parse(resp.Content)!;
+            if (respJson["status_code"]!.GetValue<int>() != 0)
+            {
+                message = respJson["status_msg"]!.GetValue<string>();
+                return false;
+            }
+
+            message = respJson["user"]!.ToString();
+            return true;
+        }
+
+        public bool TrySetFollow(int uid, string token, bool follow, out string message)
+        {
+            var req = new RestRequest("/douyin/relation/action/", Method.Post)
+                .AddQueryParameter("token", token)
+                .AddQueryParameter("to_user_id", uid)
+                .AddQueryParameter("action_type", follow ? 1 : 2);
+            var resp = client.Execute(req);
+
+            if (!resp.IsSuccessStatusCode)
+            {
+                message = "Request to Zeroplay is not successful, check your network environment please.";
+                return false;
+            }
+
+            if (resp.Content is null || String.IsNullOrWhiteSpace(resp.Content))
+            {
+                message = "Unexpected Zeroplay response, please wait for a minute and try again.";
+                return false;
+            }
+
+            var respJson = JsonNode.Parse(resp.Content)!;
+            message = respJson["status_msg"]!.GetValue<string>();
+            if (respJson["status_code"]!.GetValue<int>() != 0)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public bool TryGetFollowList(int uid, string token, out string message)
+        {
+            var req = new RestRequest("/douyin/relation/follow/list/", Method.Get)
+                .AddParameter("user_id", uid)
+                .AddParameter("token", token);
+            var resp = client.Execute(req);
+            if (!resp.IsSuccessStatusCode)
+            {
+                message = "Request to Zeroplay is not successful, check your network environment please.";
+                return false;
+            }
+
+            if (resp.Content is null || String.IsNullOrWhiteSpace(resp.Content))
+            {
+                message = "Unexpected Zeroplay response, please wait for a minute and try again.";
+                return false;
+            }
+
+            var respJson = JsonNode.Parse(resp.Content)!;
+            if (respJson["status_code"]!.GetValue<int>() != 0)
+            {
+                message = respJson["status_msg"]!.GetValue<string>();
+                return false;
+            }
+            message = respJson["user_list"]!.ToString();
+            return true;
+        }
+
+        public bool TryGetPostList(int uid, string token, out string message)
+        {
+            var req = new RestRequest("/douyin/publish/list/", Method.Get)
+                .AddParameter("user_id", uid)
+                .AddParameter("token", token);
+            var resp = client.Execute(req);
+            if (!resp.IsSuccessStatusCode)
+            {
+                message = "Request to Zeroplay is not successful, check your network environment please.";
+                return false;
+            }
+
+            if (resp.Content is null || String.IsNullOrWhiteSpace(resp.Content))
+            {
+                message = "Unexpected Zeroplay response, please wait for a minute and try again.";
+                return false;
+            }
+
+            var respJson = JsonNode.Parse(resp.Content)!;
+            if (respJson["status_code"]!.GetValue<int>() != 0)
+            {
+                message = respJson["status_msg"]!.GetValue<string>();
+                return false;
+            }
+            message = respJson["video_list"]!.ToString();
             return true;
         }
 
@@ -149,120 +264,5 @@ namespace ZeroPlay.Service
             videoInfos = list;
             return true;
         }
-
-		public bool TryGetUserData(int uid, string token, out string message)
-		{
-			var req = new RestRequest("/douyin/user/", Method.Get)
-				.AddQueryParameter("user_id", uid)
-				.AddQueryParameter("token", token);
-			var resp = client.Execute(req);
-
-			if (!resp.IsSuccessStatusCode)
-			{
-				message = "Request to Zeroplay is not successful, check your network environment please.";
-				return false;
-			}
-
-			if (resp.Content is null || String.IsNullOrWhiteSpace(resp.Content))
-			{
-				message = "Unexpected Zeroplay response, please wait for a minute and try again.";
-				return false;
-			}
-
-			var respJson = JsonNode.Parse(resp.Content)!;
-			if (respJson["status_code"]!.GetValue<int>() != 0)
-			{
-				message = respJson["status_msg"]!.GetValue<string>();
-				return false;
-			}
-
-			message = respJson["user"]!.ToString();
-			return true;
-		}
-
-		public bool TrySetFollow(int uid, string token, bool follow, out string message)
-		{
-			var req = new RestRequest("/douyin/relation/action/", Method.Post)
-				.AddQueryParameter("token", token)
-				.AddQueryParameter("to_user_id", uid)
-				.AddQueryParameter("action_type", follow ? 1 : 2);
-			var resp = client.Execute(req);
-
-			if (!resp.IsSuccessStatusCode)
-			{
-				message = "Request to Zeroplay is not successful, check your network environment please.";
-				return false;
-			}
-
-			if (resp.Content is null || String.IsNullOrWhiteSpace(resp.Content))
-			{
-				message = "Unexpected Zeroplay response, please wait for a minute and try again.";
-				return false;
-			}
-
-			var respJson = JsonNode.Parse(resp.Content)!;
-			message = respJson["status_msg"]!.GetValue<string>();
-			if (respJson["status_code"]!.GetValue<int>() != 0)
-			{
-				return false;
-			}
-			return true;
-		}
-
-		public bool TryGetFollowList(int uid, string token, out string message)
-		{
-			var req = new RestRequest("/douyin/relation/follow/list/", Method.Get)
-				.AddParameter("user_id", uid)
-				.AddParameter("token", token);
-			var resp = client.Execute(req);
-			if (!resp.IsSuccessStatusCode)
-			{
-				message = "Request to Zeroplay is not successful, check your network environment please.";
-				return false;
-			}
-
-			if (resp.Content is null || String.IsNullOrWhiteSpace(resp.Content))
-			{
-				message = "Unexpected Zeroplay response, please wait for a minute and try again.";
-				return false;
-			}
-
-			var respJson = JsonNode.Parse(resp.Content)!;
-			if (respJson["status_code"]!.GetValue<int>() != 0)
-			{
-				message = respJson["status_msg"]!.GetValue<string>();
-				return false;
-			}
-			message = respJson["user_list"]!.ToString();
-			return true;
-		}
-
-		public bool TryGetPostList(int uid, string token, out string message)
-		{
-			var req = new RestRequest("/douyin/publish/list/", Method.Get)
-				.AddParameter("user_id", uid)
-				.AddParameter("token", token);
-			var resp = client.Execute(req);
-			if (!resp.IsSuccessStatusCode)
-			{
-				message = "Request to Zeroplay is not successful, check your network environment please.";
-				return false;
-			}
-
-			if (resp.Content is null || String.IsNullOrWhiteSpace(resp.Content))
-			{
-				message = "Unexpected Zeroplay response, please wait for a minute and try again.";
-				return false;
-			}
-
-			var respJson = JsonNode.Parse(resp.Content)!;
-			if (respJson["status_code"]!.GetValue<int>() != 0)
-			{
-				message = respJson["status_msg"]!.GetValue<string>();
-				return false;
-			}
-			message = respJson["video_list"]!.ToString();
-			return true;
-		}
 	}
 }

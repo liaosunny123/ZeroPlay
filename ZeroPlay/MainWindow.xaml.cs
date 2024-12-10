@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -79,6 +80,12 @@ namespace ZeroPlay
 						var profilePage = App.GetRequiredService<ProfilePage>()!;
 						profilePage.ViewModel.RequestUserData(UserData.UserId, out _);
                         NavigationContentFrame.Content = App.GetRequiredService<ProfilePage>();
+                        break;
+                    case "CommentTestPage":
+                        NavigationContentFrame.Content = App.GetRequiredService<CommentTestPage>();
+                        break;
+                    case "ChatPage":
+                        NavigationContentFrame.Content = App.GetRequiredService<ChatPage>();
                         break;
                     default:
                         break;
