@@ -35,11 +35,33 @@
                                           Stretch="UniformToFill"
                                             />-->
 
-                        <controls:WebView2 x:Name="MyWebView2"
+                        <Grid>
+
+                            <!-- 这里使用Grid的两列布局来放置两个WebView2 -->
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+
+                            <controls:WebView2 x:Name="MyWebView2"
                                            Source="{Binding VideoUri.Uri}"
-                                           HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                           Grid.Row="1" MinHeight="200"
+                                           HorizontalAlignment="Stretch"
+                                           VerticalAlignment="Stretch"
+                                           Grid.Column="0"  
+                                            MinHeight="200"
                                            MinWidth="200"/>
+
+                            <TextBlock Text="{Binding Description}"
+                                     Style="{ThemeResource BodyTextBlockStyle}"
+                                        Grid.Column="1" 
+                                     Foreground="White"
+                                     Margin="0,8,0,0"/>
+
+                        </Grid>
+
+
+
 
 
                         <!-- 视频信息覆盖层 -->
