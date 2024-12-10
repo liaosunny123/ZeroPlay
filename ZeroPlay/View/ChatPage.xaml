@@ -60,10 +60,6 @@
                                     Text="{Binding Name}" 
                                     FontSize="14" 
                                     FontWeight="SemiBold"/>
-                                <TextBlock 
-                                    Text="{Binding Id}" 
-                                    FontSize="12" 
-                                    Foreground="Gray"/>
                             </StackPanel>
                         </Grid>
                     </DataTemplate>

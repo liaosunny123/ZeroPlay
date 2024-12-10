@@ -13,6 +13,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using ZeroPlay.Model;
+using ZeroPlay.Util;
 using ZeroPlay.ViewModel;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -23,16 +24,21 @@ namespace ZeroPlay.View
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class ChatPage : Page
+    public  partial class ChatPage : Page
     {
         public ChatViewModel ViewModel => App.GetRequiredService<ChatViewModel>() ??
             throw new ApplicationException("Can not load Chat ViewModel.");
+        private ScrollViewer _messageScrollViewer;
 
         public ChatPage()
         {
             this.InitializeComponent();
             // 将 ViewModel 绑定到页面的 DataContext
+            this.DataContext = ViewModel;
 
+            // Find ScrollViewer after page is loaded
+            _messageScrollViewer = MessageListView.FindDescendant<ScrollViewer>();
+            ViewModel.SetScrollViewer(_messageScrollViewer);
         }
 
         private void FriendListView_SelectionChanged(object sender, SelectionChangedEventArgs e)

@@ -2,6 +2,7 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
 	<WindowsSdkPackageVersion>10.0.19041.38</WindowsSdkPackageVersion>
     <RootNamespace>ZeroPlay</RootNamespace>
@@ -12,9 +13,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Control\CommentControl.xaml" />
     <None Remove="Control\LoginDialogContent.xaml" />
     <None Remove="View\ChatPage.xaml" />
-    <None Remove="View\CommentPage.xaml" />
+    <None Remove="View\CommentTestPage.xaml" />
     <None Remove="View\HomePage.xaml" />
     <None Remove="View\ProfilePage.xaml" />
     <None Remove="View\SettingsPage.xaml" />
@@ -34,6 +36,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="Control\CommentControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
     <Page Update="View\SettingsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -46,17 +54,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Util\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Page Update="View\ChatPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="View\CommentPage.xaml">
+    <Page Update="View\CommentTestPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

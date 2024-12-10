@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -72,12 +73,12 @@ namespace ZeroPlay
                                 return;
                             }
                         }
-
+                        var profilePage = App.GetRequiredService<ProfilePage>()!;
+                        profilePage.ViewModel.RequestUserData(UserData.UserId, out _);
                         NavigationContentFrame.Content = App.GetRequiredService<ProfilePage>();
                         break;
-                        //comment
-                    case "CommentPage":
-                        NavigationContentFrame.Content = App.GetRequiredService<CommentPage>();
+                    case "CommentTestPage":
+                        NavigationContentFrame.Content = App.GetRequiredService<CommentTestPage>();
                         break;
                     case "ChatPage":
                         NavigationContentFrame.Content = App.GetRequiredService<ChatPage>();
@@ -127,8 +128,9 @@ namespace ZeroPlay
                     }.ShowAsync();
                     return false;
                 }
-
-                UserData.UserToken = errorOrToken;
+                var loginTokenAndId = JsonNode.Parse(errorOrToken)!;
+                UserData.UserToken = loginTokenAndId["token"]!.ToString();
+                UserData.UserId = loginTokenAndId["user_id"]!.GetValue<int>();
                 UserData.IsLogin = true;
                 return true;
             }

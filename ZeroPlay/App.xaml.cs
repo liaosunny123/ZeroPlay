@@ -55,15 +55,14 @@ namespace ZeroPlay
                        services.AddSingleton<HomePage, HomePage>();
                        services.AddSingleton<SettingsPage, SettingsPage>();
                        services.AddSingleton<ProfilePage, ProfilePage>();
-                       services.AddSingleton<CommentPage, CommentPage>();
+                       services.AddSingleton<CommentTestPage, CommentTestPage>();
                        services.AddSingleton<ChatPage, ChatPage>();
 
 
                        // ViewModel
                        services.AddSingleton<HomeViewModel, HomeViewModel>();
                        services.AddSingleton<ProfileViewModel, ProfileViewModel>();
-                       services.AddSingleton<CommentViewModel, CommentViewModel>();
-                       services.AddSingleton<FriendListViewModel, FriendListViewModel>();
+                       services.AddSingleton<CommentTestViewModel, CommentTestViewModel>();
                        services.AddSingleton<ChatViewModel, ChatViewModel>();
 
 
