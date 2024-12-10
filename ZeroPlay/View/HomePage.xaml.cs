@@ -15,6 +15,7 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Media.Core;
 using Windows.Media.Playback;
+using Windows.UI.Popups;
 using ZeroPlay.Interface;
 using ZeroPlay.Model;
 using ZeroPlay.Service;
@@ -53,12 +54,12 @@ namespace ZeroPlay.View
             //    Description = "Description 1"
             //});
 
-            ViewModel.AddVideo(new VideoItem
-            {
-                VideoUri = Windows.Media.Core.MediaSource.CreateFromUri(new Uri(VideoFilePath)),
-                Title = "Video " + (ViewModel.GetSize() + 1),
-                Description = "Description " + (ViewModel.GetSize() + 1)
-            });
+            //ViewModel.AddVideo(new VideoItem
+            //{
+            //    VideoUri = Windows.Media.Core.MediaSource.CreateFromUri(new Uri(VideoFilePath)),
+            //    Title = "Video " + (ViewModel.GetSize() + 1),
+            //    Description = "Description " + (ViewModel.GetSize() + 1)
+            //});
 
 
             //VideoFlipView.ItemsSource = ViewModel.Videos;
@@ -68,28 +69,29 @@ namespace ZeroPlay.View
         private void VideoFlipView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
+            Debug.WriteLine("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
 
 
             // 停止之前的视频
-            _currentMediaPlayer?.Pause();
+            //_currentMediaPlayer?.Pause();
 
-            var curIdx = VideoFlipView.SelectedIndex;
-            if (curIdx >= 0 && curIdx + 1 >= ViewModel.GetSize())
-            {
+            //var curIdx = VideoFlipView.SelectedIndex;
+            //if (curIdx >= 0 && curIdx + 1 >= ViewModel.GetSize())
+            //{
 
-                Debug.WriteLine("add.........");
-                ViewModel.AddVideo(new VideoItem
-                {
-                    VideoUri = Windows.Media.Core.MediaSource.CreateFromUri(new Uri(VideoFilePath)),
-                    Title = "Video " + (ViewModel.GetSize() + 1),
-                    Description = "Description " + (ViewModel.GetSize() + 1)
-                });
-            };
+            //       Debug.WriteLine("add.........");
+            //       ViewModel.AddVideo(new VideoItem
+            //       {
+            //           VideoUri = Windows.Media.Core.MediaSource.CreateFromUri(new Uri(VideoFilePath)),
+            //           Title = "Video " + (ViewModel.GetSize() + 1),
+            //           Description = "Description " + (ViewModel.GetSize() + 1)
+            //       });
+            //   };
 
-            Debug.WriteLine(
-         sender.GetType()
+            //   Debug.WriteLine(
+            //sender.GetType()
 
-                );
+            //);
 
             //var c = VideoFlipView.SelectedItem.GetType();
 
@@ -101,17 +103,17 @@ namespace ZeroPlay.View
             //Debug.WriteLine(b);
 
             // 获取当前选中项的MediaPlayerElement
-            var container = VideoFlipView.ContainerFromIndex(VideoFlipView.SelectedIndex) as FlipViewItem;
-            if (container != null)
-            {
-                _currentMediaPlayer = FindMediaPlayerElement(container)?.MediaPlayer;
-                if (_currentMediaPlayer != null)
-                {
+            /*            var container = VideoFlipView.ContainerFromIndex(VideoFlipView.SelectedIndex) as FlipViewItem;
+                        if (container != null)
+                        {
+                            _currentMediaPlayer = FindMediaPlayerElement(container)?.MediaPlayer;
+                            if (_currentMediaPlayer != null)
+                            {
 
-                    //_currentMediaPlayer.MediaPlayer?.Pause();
-                    _currentMediaPlayer?.Play();
-                }
-            }
+                                //_currentMediaPlayer.MediaPlayer?.Pause();
+                                _currentMediaPlayer?.Play();
+                            }
+                        }*/
         }
 
         private void LikeButton_Click(object sender, RoutedEventArgs e)
@@ -128,17 +130,17 @@ namespace ZeroPlay.View
         private void MediaPlayer_Loaded(object sender, RoutedEventArgs e)
         {
 
-            var mediaPlayer = sender as MediaPlayerElement;
-            if (mediaPlayer != null && VideoFlipView.SelectedItem == mediaPlayer.DataContext)
-            {
-                _currentMediaPlayer = mediaPlayer.MediaPlayer;
+            /*            var mediaPlayer = sender as MediaPlayerElement;
+                        if (mediaPlayer != null && VideoFlipView.SelectedItem == mediaPlayer.DataContext)
+                        {
+                            _currentMediaPlayer = mediaPlayer.MediaPlayer;
 
-                if (VideoFlipView.SelectedIndex == 0)
-                {
-                    mediaPlayer.MediaPlayer.Play();
-                }
-                //mediaPlayer.MediaPlayer?.Pause();
-            }
+                            if (VideoFlipView.SelectedIndex == 0)
+                            {
+                                mediaPlayer.MediaPlayer.Play();
+                            }
+                            //mediaPlayer.MediaPlayer?.Pause();
+                        }*/
         }
 
         private void MediaPlayer_Unloaded(object sender, RoutedEventArgs e)

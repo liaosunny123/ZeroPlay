@@ -9,6 +9,8 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+
+
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <FlipView x:Name="VideoFlipView"
                   SelectionChanged="VideoFlipView_SelectionChanged"
@@ -29,7 +31,7 @@
                                           Source="{Binding VideoUri}"
                                           Loaded="MediaPlayer_Loaded"
                                           Unloaded="MediaPlayer_Unloaded"
-                                          AutoPlay="False"
+                                          AutoPlay="True"
                                           Stretch="UniformToFill"
                                             />
 
