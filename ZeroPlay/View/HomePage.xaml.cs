@@ -63,12 +63,19 @@ namespace ZeroPlay.View
                             Title = video.Title,
                             Description = video.Author.Name,
                             PlayUrl = video.PlayUrl,
+                            AuthorId = video.Author.Id,
                             AuthorAvatar = new BitmapImage(new Uri(video.Author.Avatar)),
-                            AuthorName = "@" + video.Author.Name
+                            AuthorName = "@" + video.Author.Name,
+                            VideoId = video.Id
                         });
                     });
                 }
             }
+        }
+
+        public ulong GetCurrentVideoAuthorId()
+        {
+            return ViewModel.Videos[VideoFlipView.SelectedIndex].AuthorId;
         }
 
 
@@ -81,12 +88,12 @@ namespace ZeroPlay.View
 
         private void VideoFlipView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var container = 
+            var container =
                 VideoFlipView.ContainerFromIndex(VideoFlipView.SelectedIndex) as FlipViewItem;
 
             if (container != null)
             {
-               
+
                 var view2 = FindWebView2(container);
                 view2.Source = new Uri(ViewModel.Videos[VideoFlipView.SelectedIndex].PlayUrl);
 
