@@ -156,7 +156,7 @@
                                 <!-- 其他控件，如视频播放器 -->
 
                                 <!-- 评论控件 -->
-                                <controls2:CommentControl VideoId="{Binding AuthorId}"/>
+                                <controls2:CommentControl VideoId="{Binding VideoId}"/>
                             </StackPanel>
 
 

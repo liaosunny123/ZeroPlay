@@ -66,7 +66,7 @@ namespace ZeroPlay.View
                             AuthorId = video.Author.Id,
                             AuthorAvatar = new BitmapImage(new Uri(video.Author.Avatar)),
                             AuthorName = "@" + video.Author.Name,
-                            VideoId = video.Id
+                            VideoId = $"{video.Id}"
                         });
                     });
                 }

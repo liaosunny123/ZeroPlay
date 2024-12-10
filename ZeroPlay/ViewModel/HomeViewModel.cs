@@ -72,7 +72,7 @@ namespace ZeroPlay.ViewModel
     {
         public MediaSource VideoUri { get; set; }
 
-        public ulong VideoId { get; set; }
+        public string VideoId { get; set; }
 
         public string PlayUrl { get; set; }
 
