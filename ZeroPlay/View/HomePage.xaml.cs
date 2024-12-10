@@ -17,6 +17,7 @@ using Windows.Foundation.Collections;
 using Windows.Media.Core;
 using Windows.Media.Playback;
 using Windows.UI.Popups;
+using ZeroPlay.Control;
 using ZeroPlay.Interface;
 using ZeroPlay.Model;
 using ZeroPlay.Service;
@@ -78,6 +79,32 @@ namespace ZeroPlay.View
             return ViewModel.Videos[VideoFlipView.SelectedIndex].AuthorId;
         }
 
+
+        public string GetCurrentVideoId()
+        {
+            return ViewModel.Videos[VideoFlipView.SelectedIndex].VideoId;
+        }
+
+        private void CommentButton_Click(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+
+            // 创建 CommentDialog
+            var dialog = new ContentDialog()
+            {
+                Title = "Comments",
+                CloseButtonText = "Close",
+                DefaultButton = ContentDialogButton.Close,
+                Content = new CommentControl()
+                {
+                    VideoId = GetCurrentVideoId()
+                },
+                XamlRoot = this.XamlRoot
+            };
+
+            // 显示对话框
+            _ = dialog.ShowAsync();
+        }
 
         private async static void FullScreenAndPlayVideoInWebView2(WebView2 webView2)
         {
