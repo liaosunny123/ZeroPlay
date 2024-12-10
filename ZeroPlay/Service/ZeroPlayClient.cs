@@ -1,7 +1,11 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using Newtonsoft.Json;
+using Microsoft.Extensions.Hosting;
 using RestSharp;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Nodes;
@@ -101,7 +105,48 @@ namespace ZeroPlay.Service
                 return false;
             }
 
-            message = respJson.ToString();
+            message = respJson["token"]!.GetValue<string>();
+            return true;
+        }
+
+
+
+        public bool TryFetchVideo(out List<VideoResp> videoInfos)
+        {
+            videoInfos = [];
+
+            var req = new RestRequest("/douyin/feed/", Method.Get);
+            var resp = client.Execute(req);
+
+            if (!resp.IsSuccessStatusCode)
+            {
+
+
+                return false;
+            }
+
+            if (resp.Content is null || String.IsNullOrWhiteSpace(resp.Content))
+            {
+                return false;
+            }
+
+            var respJson = JsonNode.Parse(resp.Content)!;
+
+            if (respJson["status_code"]!.GetValue<int>() != 0)
+            {
+                return false;
+            }
+
+            //var list = respJson["video_list"]!.GetValue<List<JsonNode>>();
+
+            var list = JsonConvert.DeserializeObject<List<VideoResp>>(respJson["video_list"]!.ToString());
+
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                Debug.WriteLine(list[i].Title);
+            }
+            videoInfos = list;
             return true;
         }
 

@@ -53,5 +53,11 @@ namespace ZeroPlay.Interface
 		bool TryGetFollowList(int uid, string token, out string message);
 
 		bool TryGetPostList(int uid, string token, out string message);
+
+
+
+
+
+        bool TryFetchVideo(out List<VideoResp> videos);
     }
 }
