@@ -47,6 +47,9 @@ namespace ZeroPlay.View
 
             ViewModel = new HomeViewModel();
 
+            FetchVideo();
+
+
             //VideoFlipView.Items.Add(new VideoItem
             //{
             //    VideoUri = Windows.Media.Core.MediaSource.CreateFromUri(new Uri("C:\\Users\\forDece\\source\\repos\\ZeroPlay\\ZeroPlay\\Assets\\video1.mp4")),
@@ -66,6 +69,26 @@ namespace ZeroPlay.View
 
         }
 
+        private void FetchVideo()
+        {
+            List<VideoResp> list;
+
+            var client = App.GetRequiredService<IZeroPlayService>();
+
+            client.TryFetchVideo(out list);
+
+            list.ForEach(video =>
+            {
+                ViewModel.Videos.Add(new VideoItem
+                {
+                    Title = video.Title,
+                    Description = video.Author.Name,
+                    VideoUri = MediaSource.CreateFromUri(new Uri(video.PlayUrl))
+
+                });
+            });
+        }
+
         private void VideoFlipView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
@@ -73,20 +96,14 @@ namespace ZeroPlay.View
 
 
             // 停止之前的视频
-            //_currentMediaPlayer?.Pause();
+            _currentMediaPlayer?.Pause();
 
-            //var curIdx = VideoFlipView.SelectedIndex;
-            //if (curIdx >= 0 && curIdx + 1 >= ViewModel.GetSize())
-            //{
+            var curIdx = VideoFlipView.SelectedIndex;
+            if (curIdx >= 0 && curIdx + 1 >= ViewModel.GetSize())
+            {
+                FetchVideo();
 
-            //       Debug.WriteLine("add.........");
-            //       ViewModel.AddVideo(new VideoItem
-            //       {
-            //           VideoUri = Windows.Media.Core.MediaSource.CreateFromUri(new Uri(VideoFilePath)),
-            //           Title = "Video " + (ViewModel.GetSize() + 1),
-            //           Description = "Description " + (ViewModel.GetSize() + 1)
-            //       });
-            //   };
+            };
 
             //   Debug.WriteLine(
             //sender.GetType()
@@ -130,17 +147,17 @@ namespace ZeroPlay.View
         private void MediaPlayer_Loaded(object sender, RoutedEventArgs e)
         {
 
-            /*            var mediaPlayer = sender as MediaPlayerElement;
-                        if (mediaPlayer != null && VideoFlipView.SelectedItem == mediaPlayer.DataContext)
-                        {
-                            _currentMediaPlayer = mediaPlayer.MediaPlayer;
+            var mediaPlayer = sender as MediaPlayerElement;
+            if (mediaPlayer != null && VideoFlipView.SelectedItem == mediaPlayer.DataContext)
+            {
+                _currentMediaPlayer = mediaPlayer.MediaPlayer;
 
-                            if (VideoFlipView.SelectedIndex == 0)
-                            {
-                                mediaPlayer.MediaPlayer.Play();
-                            }
-                            //mediaPlayer.MediaPlayer?.Pause();
-                        }*/
+                if (VideoFlipView.SelectedIndex == 0)
+                {
+                    mediaPlayer.MediaPlayer.Play();
+                }
+                //mediaPlayer.MediaPlayer?.Pause();
+            }
         }
 
         private void MediaPlayer_Unloaded(object sender, RoutedEventArgs e)

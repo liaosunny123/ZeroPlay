@@ -31,7 +31,7 @@
                                           Source="{Binding VideoUri}"
                                           Loaded="MediaPlayer_Loaded"
                                           Unloaded="MediaPlayer_Unloaded"
-                                          AutoPlay="True"
+                                          AutoPlay="False"
                                           Stretch="UniformToFill"
                                             />
 

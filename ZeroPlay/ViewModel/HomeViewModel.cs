@@ -51,22 +51,7 @@ namespace ZeroPlay.ViewModel
             //};
             //count = 2;
 
-            List<VideoResp> list;
 
-            var client = App.GetRequiredService<IZeroPlayService>();
-
-            client.TryFetchVideo(out list);
-
-            list.ForEach(video =>
-            {
-                Videos.Add(new VideoItem
-                {
-                    Title = video.Title,
-                    Description = video.Author.Name,
-                    VideoUri = MediaSource.CreateFromUri(new Uri(video.PlayUrl))
-
-                });
-            });
 
             currentIndex = 0;
         }
