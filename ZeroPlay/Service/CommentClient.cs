@@ -9,11 +9,11 @@ namespace ZeroPlay.Service
 {
     internal class CommentClient : ICommentService
     {
-        private readonly RestClient _client = new RestClient("https://yourapi.com");
-
+        private readonly RestClient _client = new RestClient(Constant.Constant.ZeroPlayServerHost);
+        public CommentClient() { }
         public bool TryGetComments(string videoId, string token, out List<Comment> comments)
         {
-            var req = new RestRequest("/comment/list", Method.Get)
+            var req = new RestRequest("/douyin/comment/list", Method.Get)
                 .AddQueryParameter("video_id", videoId)
                 .AddQueryParameter("token", token);
 
@@ -74,7 +74,7 @@ namespace ZeroPlay.Service
 
         public bool TryPostComment(string videoId, string token, string content, out string errorMessage)
         {
-            var req = new RestRequest("/comment/action", Method.Post)
+            var req = new RestRequest("/douyin/comment/action", Method.Post)
                 .AddQueryParameter("video_id", videoId)
                 .AddQueryParameter("token", token)
                 .AddQueryParameter("action_type", "1")

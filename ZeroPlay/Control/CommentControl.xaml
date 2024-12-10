@@ -7,9 +7,11 @@
     xmlns:model="using:ZeroPlay.Model"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    Height="600">
+    <!-- 添加一个默认高度 -->
 
-    <Grid Padding="16">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
@@ -27,10 +29,14 @@
         <ListView x:Name="CommentsList"
                  ItemsSource="{x:Bind Comments, Mode=OneWay}"
                  SelectionMode="None"
-                 Grid.Row="0">
+                 Padding="16,16,16,0"
+                 Grid.Row="0"
+                 VerticalAlignment="Stretch"
+                 HorizontalAlignment="Stretch">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <Setter Property="Padding" Value="0"/>
                     <Setter Property="Margin" Value="0,4"/>
                 </Style>
             </ListView.ItemContainerStyle>
@@ -79,7 +85,7 @@
 
         <!-- Comment Input Area -->
         <Grid Grid.Row="1" 
-              Padding="0,8,0,0"
+              Padding="16,8,16,16"
               Background="{ThemeResource LayerFillColorDefaultBrush}"
               BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
               BorderThickness="0,1,0,0">

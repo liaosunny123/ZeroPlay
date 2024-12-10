@@ -9,6 +9,8 @@ using System.Windows.Input;
 using ZeroPlay.Interface;
 using ZeroPlay.Model;
 using ZeroPlay.ShareModel;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace ZeroPlay.Control
 {
@@ -140,6 +142,7 @@ namespace ZeroPlay.Control
                     NewCommentText = string.Empty;
                     await LoadCommentsAsync();
                     ShowMessage("Comment posted successfully", InfoBarSeverity.Success);
+
                 }
                 else
                 {
@@ -162,6 +165,7 @@ namespace ZeroPlay.Control
             MessageInfoBar.Severity = severity;
             MessageInfoBar.IsOpen = true;
         }
+
     }
 
     public class AsyncRelayCommand : ICommand
@@ -204,5 +208,7 @@ namespace ZeroPlay.Control
         {
             CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
+
     }
+
 }
