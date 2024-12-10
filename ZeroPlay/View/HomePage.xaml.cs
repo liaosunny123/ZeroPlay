@@ -4,6 +4,7 @@ using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Navigation;
 using System;
 using System.Collections.Generic;
@@ -71,39 +72,81 @@ namespace ZeroPlay.View
 
         private void FetchVideo()
         {
-            List<VideoResp> list;
-
             var client = App.GetRequiredService<IZeroPlayService>();
 
-            client.TryFetchVideo(out list);
-
-            list.ForEach(video =>
+            if (client!.TryFetchVideo(out List<VideoResp> list))
             {
-                ViewModel.Videos.Add(new VideoItem
+                list.ForEach(video =>
                 {
-                    Title = video.Title,
-                    Description = video.Author.Name,
-                    VideoUri = MediaSource.CreateFromUri(new Uri(video.PlayUrl))
+                    ViewModel.Videos.Add(new VideoItem
+                    {
+                        LikeNumStr = $"{video.FavoriteCount}点赞",
+                        CommentNumStr = $"{video.CommentCount}评论",
+                        Title = video.Title,
+                        Description = video.Author.Name,
+                        //VideoUri = MediaSource.CreateFromUri(new Uri(video.PlayUrl)),
+                        PlayUrl = video.PlayUrl,
+                        AuthorAvatar = new BitmapImage(new Uri(video.Author.Avatar)),
+                        AuthorName = "@" + video.Author.Name
 
+
+                    });
+
+                    foreach (var item in ViewModel.Videos)
+                    {
+                        Debug.WriteLine(item.PlayUrl);
+                        Debug.WriteLine(item.Title);
+                    }
                 });
-            });
+            }
+
+
+
+
+        }
+
+
+        private async static void FullScreenAndPlayVideoInWebView2(WebView2 webView2)
+        {
+            // 执行JavaScript代码来触发视频自动播放，不同视频网站或视频嵌入方式可能代码略有不同，以下是通用示例
+            await webView2.CoreWebView2.ExecuteScriptAsync("var videos = document.getElementsByTagName('video');if (videos[0])videos[0].requestFullscreen()&&videos[0].play();");
         }
 
         private void VideoFlipView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
+            //return;
             Debug.WriteLine("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
 
 
             // 停止之前的视频
-            _currentMediaPlayer?.Pause();
+            //_currentMediaPlayer?.Pause();
+
+            var container = VideoFlipView.ContainerFromIndex(VideoFlipView.SelectedIndex) as FlipViewItem;
+            if (container != null)
+            {
+                var view2 = FindWebView2(container);
+                FullScreenAndPlayVideoInWebView2(view2);
+            }
 
             var curIdx = VideoFlipView.SelectedIndex;
-            if (curIdx >= 0 && curIdx + 1 >= ViewModel.GetSize())
-            {
-                FetchVideo();
 
-            };
+            // 来个双检锁
+            if (curIdx > 0 && curIdx + 1 >= ViewModel.GetSize())
+            {
+                lock (this)
+                {
+
+                    if (curIdx > 0 && curIdx + 1 >= ViewModel.GetSize())
+                    {
+                        FetchVideo();
+                        return;
+
+                    };
+                }
+            }
+
+
 
             //   Debug.WriteLine(
             //sender.GetType()
@@ -131,6 +174,24 @@ namespace ZeroPlay.View
                                 _currentMediaPlayer?.Play();
                             }
                         }*/
+        }
+
+        private async void WebView2_Loaded(object sender, RoutedEventArgs e)
+        {
+
+            var webView2 = sender as WebView2;
+            if (webView2 != null && VideoFlipView.SelectedItem == webView2.DataContext)
+            {
+                // 将首个视频全屏
+                if (VideoFlipView.SelectedIndex == 0)
+                {
+                    await webView2.EnsureCoreWebView2Async(null);
+
+                    await webView2.CoreWebView2.ExecuteScriptAsync("var videos = document.getElementsByTagName('video');if (videos[0])videos[0].requestFullscreen();");
+
+                }
+
+            }
         }
 
         private void LikeButton_Click(object sender, RoutedEventArgs e)
@@ -174,6 +235,49 @@ namespace ZeroPlay.View
 
                 //mediaPlayer.MediaPlayer?.Dispose();
             }
+        }
+
+
+        public static T FindChild<T>(DependencyObject parent) where T : DependencyObject
+        {
+            if (parent == null)
+                return null;
+
+            int childrenCount = VisualTreeHelper.GetChildrenCount(parent);
+            for (int i = 0; i < childrenCount; i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+                if (child is T typedChild)
+                    return typedChild;
+
+                // Recursively search deeper into nested containers
+                T result = FindChild<T>(child);
+                if (result != null)
+                    return result;
+            }
+
+            return null; // Child not found
+        }
+
+
+        private WebView2 FindWebView2(DependencyObject parent)
+        {
+
+            var childCount = VisualTreeHelper.GetChildrenCount(parent);
+            for (int i = 0; i < childCount; i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+                if (child is WebView2 mediaPlayer)
+                {
+                    return mediaPlayer;
+                }
+                var result = FindWebView2(child);
+                if (result != null)
+                {
+                    return result;
+                }
+            }
+            return null;
         }
 
         private MediaPlayerElement FindMediaPlayerElement(DependencyObject parent)
