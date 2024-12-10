@@ -9,7 +9,109 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-        <TextBlock Text="Welcome to ZeroPlay" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36"/>
+
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <FlipView x:Name="VideoFlipView"
+                  SelectionChanged="VideoFlipView_SelectionChanged"
+                  VerticalAlignment="Stretch"
+                  ItemsSource="{x:Bind ViewModel.Videos}"
+                  HorizontalAlignment="Stretch">
+
+            <FlipView.ItemsPanel >
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel Orientation="Vertical"/>
+                </ItemsPanelTemplate>
+            </FlipView.ItemsPanel>
+
+            <FlipView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <MediaPlayerElement x:Name="MediaPlayer"
+                                          Source="{Binding VideoUri}"
+                                          Loaded="MediaPlayer_Loaded"
+                                          Unloaded="MediaPlayer_Unloaded"
+                                          AutoPlay="False"
+                                          Stretch="UniformToFill"
+                                            />
+
+                        <!-- 视频信息覆盖层 -->
+                        <StackPanel VerticalAlignment="Bottom"
+                                  Margin="20,0,20,80"
+                                  Padding="10">
+
+                            <AppBarButton Icon="Like" Label="SymbolIcon"/>
+
+                            <TextBlock Text="{Binding Title}"
+                                     Style="{ThemeResource TitleTextBlockStyle}"
+                                     Foreground="White"/>
+                            <TextBlock Text="{Binding Description}"
+                                     Style="{ThemeResource BodyTextBlockStyle}"
+                                     Foreground="White"
+                                     Margin="0,8,0,0"/>
+
+                        </StackPanel>
+
+
+                        <StackPanel Orientation="Vertical"
+                                    VerticalAlignment="Center" 
+                                    HorizontalAlignment="Right"
+                                     Margin="20,0,20,80"
+                                     Padding="10"
+                                    >
+
+                            <!--<AppBarButton Label="点赞" Click="LikeButton_Click"
+                                          Foreground="Black"
+                                          >
+                                <AppBarButton.Icon>
+                                    <BitmapIcon UriSource="ms-appx:///Assets/like_icon.png"/>
+                                </AppBarButton.Icon>
+                            </AppBarButton>-->
+
+                            <!-- 点赞功能部分 -->
+                            <Button x:Name="LikeButton"
+                                        Click="LikeButton_Click"
+                                        Margin="0,8,0,0"
+                                        Foreground="Black"
+                                   
+                                >
+                                <!--Foreground="Black"-->
+
+                                <Button.Content>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="ms-appx:///Assets/like_icon.png"
+                                                   Width="20"
+                                                   Height="20"/>
+                                        <TextBlock Text="点赞" Margin="8,0,0,0"
+                                                   
+                                                   SelectionHighlightColor="Black"/>
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+
+
+                            <!-- 评论功能部分 -->
+                            <Button x:Name="CommentButton"
+                                        Click="LikeButton_Click"
+                                        Margin="0,20,0,0"
+                                        Foreground="Black">
+                                <Button.Content>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="ms-appx:///Assets/comment_icon.png"
+                                                   Width="20"
+                                                   Height="20"/>
+                                        <TextBlock Text="评论" Margin="8,0,0,0"/>
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+
+                        </StackPanel>
+
+
+                    </Grid>
+
+                </DataTemplate>
+            </FlipView.ItemTemplate>
+        </FlipView>
     </Grid>
 </Page>

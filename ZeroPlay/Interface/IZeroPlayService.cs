@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ZeroPlay.Model;
 
 namespace ZeroPlay.Interface
 {
@@ -31,5 +32,11 @@ namespace ZeroPlay.Interface
         /// <param name="token"></param>
         /// <returns></returns>
         bool IsTokenValid(string token);
+
+
+
+
+
+        bool TryFetchVideo(out List<VideoResp> videos);
     }
 }
