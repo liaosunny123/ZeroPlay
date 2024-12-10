@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -18,6 +19,7 @@ using ZeroPlay.Control;
 using ZeroPlay.Interface;
 using ZeroPlay.ShareModel;
 using ZeroPlay.View;
+using System.Text.Json.Nodes;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -73,7 +75,15 @@ namespace ZeroPlay
                             }
                         }
 
+						var profilePage = App.GetRequiredService<ProfilePage>()!;
+						profilePage.ViewModel.RequestUserData(UserData.UserId, out _);
                         NavigationContentFrame.Content = App.GetRequiredService<ProfilePage>();
+                        break;
+                    case "CommentTestPage":
+                        NavigationContentFrame.Content = App.GetRequiredService<CommentTestPage>();
+                        break;
+                    case "ChatPage":
+                        NavigationContentFrame.Content = App.GetRequiredService<ChatPage>();
                         break;
                     default:
                         break;
@@ -121,7 +131,9 @@ namespace ZeroPlay
                     return false;
                 }
 
-                UserData.UserToken = errorOrToken;
+				var loginTokenAndId = JsonNode.Parse(errorOrToken)!;
+				UserData.UserToken = loginTokenAndId["token"]!.ToString();
+				UserData.UserId = loginTokenAndId["user_id"]!.GetValue<int>();
                 UserData.IsLogin = true;
                 return true;
             }
@@ -138,7 +150,9 @@ namespace ZeroPlay
                 return false;
             }
 
-            UserData.UserToken = error;
+			var tokenAndId = JsonNode.Parse(error)!;
+			UserData.UserToken = tokenAndId["token"]!.ToString();
+			UserData.UserId = tokenAndId["user_id"]!.GetValue<int>();
             UserData.IsLogin = true;
             return true;
         }

@@ -32,12 +32,16 @@
             <!-- 顶部菜单项 -->
             <NavigationView.MenuItems>
                 <NavigationViewItem x:Name="HomePageItem" Icon="Home" Content="主页" Tag="HomePage"/>
+                <NavigationViewItem x:Name="CommentTestPageItem" Icon="Comment" Content="评论" Tag="CommentTestPage"/>
+                <NavigationViewItem x:Name="ChatPageItem" Icon="People" Content="好友列表" Tag="ChatPage"/>
             </NavigationView.MenuItems>
 
             <!-- 底部菜单项 -->
             <NavigationView.FooterMenuItems>
                 <NavigationViewItem x:Name="ProfilePageItem" Icon="Contact" Content="我的" Tag="ProfilePage"/>
             </NavigationView.FooterMenuItems>
+
+            <!-- 评论页面测试 -->
 
             <Frame x:Name="NavigationContentFrame"/>
         </NavigationView>

@@ -16,6 +16,9 @@ namespace ZeroPlay.ShareModel
         [ObservableProperty]
         private string userToken;
 
+		[ObservableProperty]
+		private int userId;
+
         public UserDataShareModel() { }
     }
 }
