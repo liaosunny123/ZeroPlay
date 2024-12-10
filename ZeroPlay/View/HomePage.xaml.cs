@@ -89,6 +89,12 @@ namespace ZeroPlay.View
             });
         }
 
+        private async void PlayVideoInWebView2(WebView2 webView2)
+        {
+            // 执行JavaScript代码来触发视频自动播放，不同视频网站或视频嵌入方式可能代码略有不同，以下是通用示例
+            await webView2.CoreWebView2.ExecuteScriptAsync("var videos = document.getElementsByTagName('video'); for(var i = 0; i < videos.length; i++) { videos[i].play(); }");
+        }
+
         private void VideoFlipView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
@@ -105,6 +111,9 @@ namespace ZeroPlay.View
                 FetchVideo();
 
             };
+
+            var view2 = FindChild<WebView2>(VideoFlipView);
+            PlayVideoInWebView2(view2);
 
             //   Debug.WriteLine(
             //sender.GetType()
@@ -176,6 +185,29 @@ namespace ZeroPlay.View
                 //mediaPlayer.MediaPlayer?.Dispose();
             }
         }
+
+
+        public static T FindChild<T>(DependencyObject parent) where T : DependencyObject
+        {
+            if (parent == null)
+                return null;
+
+            int childrenCount = VisualTreeHelper.GetChildrenCount(parent);
+            for (int i = 0; i < childrenCount; i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+                if (child is T typedChild)
+                    return typedChild;
+
+                // Recursively search deeper into nested containers
+                T result = FindChild<T>(child);
+                if (result != null)
+                    return result;
+            }
+
+            return null; // Child not found
+        }
+
 
         private MediaPlayerElement FindMediaPlayerElement(DependencyObject parent)
         {
