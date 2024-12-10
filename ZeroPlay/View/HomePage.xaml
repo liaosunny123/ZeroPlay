@@ -9,7 +9,44 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-        <TextBlock Text="Welcome to ZeroPlay" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36"/>
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <FlipView x:Name="VideoFlipView"
+                  SelectionChanged="VideoFlipView_SelectionChanged"
+                  VerticalAlignment="Stretch"
+                  HorizontalAlignment="Stretch">
+
+            <FlipView.ItemsPanel >
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel Orientation="Vertical"/>
+                </ItemsPanelTemplate>
+            </FlipView.ItemsPanel>
+
+            <FlipView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <MediaPlayerElement x:Name="MediaPlayer"
+                                          Source="{Binding VideoUri}"
+                                          Loaded="MediaPlayer_Loaded"
+                                          Unloaded="MediaPlayer_Unloaded"
+                                          AutoPlay="False"
+                                          Stretch="UniformToFill"/>
+
+                        <!-- 视频信息覆盖层 -->
+                        <StackPanel VerticalAlignment="Bottom"
+                                  Margin="20,0,20,80"
+                                  Padding="10">
+                            <TextBlock Text="{Binding Title}"
+                                     Style="{ThemeResource TitleTextBlockStyle}"
+                                     Foreground="White"/>
+                            <TextBlock Text="{Binding Description}"
+                                     Style="{ThemeResource BodyTextBlockStyle}"
+                                     Foreground="White"
+                                     Margin="0,8,0,0"/>
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </FlipView.ItemTemplate>
+        </FlipView>
     </Grid>
 </Page>
+
