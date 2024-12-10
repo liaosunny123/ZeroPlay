@@ -92,6 +92,7 @@ namespace ZeroPlay.View
         private void VideoFlipView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
+            return;
             Debug.WriteLine("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
 
 

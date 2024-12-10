@@ -5,13 +5,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:ZeroPlay.View"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
 
-
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
         <FlipView x:Name="VideoFlipView"
                   SelectionChanged="VideoFlipView_SelectionChanged"
                   VerticalAlignment="Stretch"
@@ -27,13 +27,20 @@
             <FlipView.ItemTemplate>
                 <DataTemplate>
                     <Grid>
-                        <MediaPlayerElement x:Name="MediaPlayer"
+                        <!--<MediaPlayerElement x:Name="MediaPlayer"
                                           Source="{Binding VideoUri}"
                                           Loaded="MediaPlayer_Loaded"
                                           Unloaded="MediaPlayer_Unloaded"
                                           AutoPlay="False"
                                           Stretch="UniformToFill"
-                                            />
+                                            />-->
+
+                        <controls:WebView2 x:Name="MyWebView2"
+                                           Source="{Binding VideoUri.Uri}"
+                                           HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                           Grid.Row="1" MinHeight="200"
+                                           MinWidth="200"/>
+
 
                         <!-- 视频信息覆盖层 -->
                         <StackPanel VerticalAlignment="Bottom"
@@ -72,19 +79,20 @@
                             <Button x:Name="LikeButton"
                                         Click="LikeButton_Click"
                                         Margin="0,8,0,0"
-                                        Foreground="Black"
+                                        Foreground="White"
                                    
                                 >
                                 <!--Foreground="Black"-->
 
                                 <Button.Content>
                                     <StackPanel Orientation="Horizontal">
-                                        <Image Source="ms-appx:///Assets/like_icon.png"
+                                        <Image Source="ms-appx:///Assets/like_white.png"
                                                    Width="20"
-                                                   Height="20"/>
+                                                   Height="20"
+                                               />
                                         <TextBlock Text="点赞" Margin="8,0,0,0"
                                                    
-                                                   SelectionHighlightColor="Black"/>
+                                                   SelectionHighlightColor="White"/>
                                     </StackPanel>
                                 </Button.Content>
                             </Button>
@@ -94,10 +102,10 @@
                             <Button x:Name="CommentButton"
                                         Click="LikeButton_Click"
                                         Margin="0,20,0,0"
-                                        Foreground="Black">
+                                        Foreground="White">
                                 <Button.Content>
                                     <StackPanel Orientation="Horizontal">
-                                        <Image Source="ms-appx:///Assets/comment_icon.png"
+                                        <Image Source="ms-appx:///Assets/comment_white.png"
                                                    Width="20"
                                                    Height="20"/>
                                         <TextBlock Text="评论" Margin="8,0,0,0"/>
