@@ -17,6 +17,7 @@ using Windows.Foundation.Collections;
 using Windows.Media.Core;
 using Windows.Media.Playback;
 using Windows.UI.Popups;
+using ZeroPlay.Control;
 using ZeroPlay.Interface;
 using ZeroPlay.Model;
 using ZeroPlay.Service;
@@ -59,6 +60,7 @@ namespace ZeroPlay.View
                         ViewModel.Videos.Add(new VideoItem
                         {
                             LikeNumStr = $"{video.FavoriteCount}点赞",
+                            LikeNum = video.FavoriteCount,
                             CommentNumStr = $"{video.CommentCount}评论",
                             Title = video.Title,
                             Description = video.Author.Name,
@@ -78,6 +80,32 @@ namespace ZeroPlay.View
             return ViewModel.Videos[VideoFlipView.SelectedIndex].AuthorId;
         }
 
+
+        public string GetCurrentVideoId()
+        {
+            return ViewModel.Videos[VideoFlipView.SelectedIndex].VideoId;
+        }
+
+        private void CommentButton_Click(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+
+            // 创建 CommentDialog
+            var dialog = new ContentDialog()
+            {
+                Title = "视频评论",
+                CloseButtonText = "关闭",
+                DefaultButton = ContentDialogButton.Close,
+                Content = new CommentControl()
+                {
+                    VideoId = GetCurrentVideoId()
+                },
+                XamlRoot = this.XamlRoot
+            };
+
+            // 显示对话框
+            _ = dialog.ShowAsync();
+        }
 
         private async static void FullScreenAndPlayVideoInWebView2(WebView2 webView2)
         {
@@ -169,6 +197,9 @@ namespace ZeroPlay.View
 
         private void LikeButton_Click(object sender, RoutedEventArgs e)
         {
+            var num = ++ViewModel.Videos[VideoFlipView.SelectedIndex].LikeNum;
+            ViewModel.Videos[VideoFlipView.SelectedIndex].LikeNumStr = $"{num}点赞";
+
 
         }
 
