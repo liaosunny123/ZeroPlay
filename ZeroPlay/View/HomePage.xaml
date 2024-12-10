@@ -48,7 +48,7 @@
 
 
                             <controls:WebView2 x:Name="MyWebView2"
-                                           Source="{Binding VideoUri.Uri}"
+                                           Source="{Binding PlayUrl}"
                                            HorizontalAlignment="Stretch"
                                            VerticalAlignment="Stretch"
                                            Grid.Column="0"  

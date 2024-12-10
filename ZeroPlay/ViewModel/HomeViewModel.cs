@@ -22,7 +22,7 @@ namespace ZeroPlay.ViewModel
     public partial class HomeViewModel : ObservableRecipient
     {
         [ObservableProperty]
-        private ObservableCollection<VideoItem> videos = new();
+        private ObservableCollection<VideoItem> videos = [];
 
         [ObservableProperty]
         private int currentIndex;
@@ -71,6 +71,8 @@ namespace ZeroPlay.ViewModel
     public class VideoItem
     {
         public MediaSource VideoUri { get; set; }
+
+        public string PlayUrl { get; set; }
 
         public string LikeNumStr { get; set; }
 

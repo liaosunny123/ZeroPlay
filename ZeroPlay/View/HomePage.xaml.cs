@@ -72,27 +72,37 @@ namespace ZeroPlay.View
 
         private void FetchVideo()
         {
-            List<VideoResp> list;
-
             var client = App.GetRequiredService<IZeroPlayService>();
 
-            client.TryFetchVideo(out list);
-
-            list.ForEach(video =>
+            if (client!.TryFetchVideo(out List<VideoResp> list))
             {
-                ViewModel.Videos.Add(new VideoItem
+                list.ForEach(video =>
                 {
-                    LikeNumStr = $"{video.FavoriteCount}点赞",
-                    CommentNumStr = $"{video.CommentCount}评论",
-                    Title = video.Title,
-                    Description = video.Author.Name,
-                    VideoUri = MediaSource.CreateFromUri(new Uri(video.PlayUrl)),
-                    AuthorAvatar = new BitmapImage(new Uri(video.Author.Avatar)),
-                    AuthorName = "@" + video.Author.Name
+                    ViewModel.Videos.Add(new VideoItem
+                    {
+                        LikeNumStr = $"{video.FavoriteCount}点赞",
+                        CommentNumStr = $"{video.CommentCount}评论",
+                        Title = video.Title,
+                        Description = video.Author.Name,
+                        //VideoUri = MediaSource.CreateFromUri(new Uri(video.PlayUrl)),
+                        PlayUrl = video.PlayUrl,
+                        AuthorAvatar = new BitmapImage(new Uri(video.Author.Avatar)),
+                        AuthorName = "@" + video.Author.Name
 
 
+                    });
+
+                    foreach (var item in ViewModel.Videos)
+                    {
+                        Debug.WriteLine(item.PlayUrl);
+                        Debug.WriteLine(item.Title);
+                    }
                 });
-            });
+            }
+
+
+
+
         }
 
 
@@ -112,18 +122,31 @@ namespace ZeroPlay.View
             // 停止之前的视频
             //_currentMediaPlayer?.Pause();
 
-            var curIdx = VideoFlipView.SelectedIndex;
-            if (curIdx >= 0 && curIdx + 1 >= ViewModel.GetSize())
-            {
-                FetchVideo();
-
-            };
             var container = VideoFlipView.ContainerFromIndex(VideoFlipView.SelectedIndex) as FlipViewItem;
             if (container != null)
             {
                 var view2 = FindWebView2(container);
                 FullScreenAndPlayVideoInWebView2(view2);
             }
+
+            var curIdx = VideoFlipView.SelectedIndex;
+
+            // 来个双检锁
+            if (curIdx > 0 && curIdx + 1 >= ViewModel.GetSize())
+            {
+                lock (this)
+                {
+
+                    if (curIdx > 0 && curIdx + 1 >= ViewModel.GetSize())
+                    {
+                        FetchVideo();
+                        return;
+
+                    };
+                }
+            }
+
+
 
             //   Debug.WriteLine(
             //sender.GetType()
