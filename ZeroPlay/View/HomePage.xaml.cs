@@ -82,40 +82,48 @@ namespace ZeroPlay.View
             {
                 ViewModel.Videos.Add(new VideoItem
                 {
+                    LikeNumStr = $"{video.FavoriteCount}点赞",
+                    CommentNumStr = $"{video.CommentCount}评论",
                     Title = video.Title,
                     Description = video.Author.Name,
                     VideoUri = MediaSource.CreateFromUri(new Uri(video.PlayUrl)),
-                    AuthorAvatar = new BitmapImage(new Uri(video.Author.Avatar))
+                    AuthorAvatar = new BitmapImage(new Uri(video.Author.Avatar)),
+                    AuthorName = video.Author.Name
+
 
                 });
             });
         }
 
-        private async void PlayVideoInWebView2(WebView2 webView2)
+
+        private async static void FullScreenAndPlayVideoInWebView2(WebView2 webView2)
         {
             // 执行JavaScript代码来触发视频自动播放，不同视频网站或视频嵌入方式可能代码略有不同，以下是通用示例
-            await webView2.CoreWebView2.ExecuteScriptAsync("var videos = document.getElementsByTagName('video'); for(var i = 0; i < videos.length; i++) { videos[i].play(); }");
+            await webView2.CoreWebView2.ExecuteScriptAsync("var videos = document.getElementsByTagName('video');if (videos[0])videos[0].requestFullscreen()&&videos[0].play();");
         }
 
         private void VideoFlipView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
-            return;
+            //return;
             Debug.WriteLine("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
 
 
             // 停止之前的视频
-            _currentMediaPlayer?.Pause();
+            //_currentMediaPlayer?.Pause();
 
-            var curIdx = VideoFlipView.SelectedIndex;
-            if (curIdx >= 0 && curIdx + 1 >= ViewModel.GetSize())
+            //var curIdx = VideoFlipView.SelectedIndex;
+            //if (curIdx >= 0 && curIdx + 1 >= ViewModel.GetSize())
+            //{
+            //FetchVideo();
+
+            //};
+            var container = VideoFlipView.ContainerFromIndex(VideoFlipView.SelectedIndex) as FlipViewItem;
+            if (container != null)
             {
-                FetchVideo();
-
-            };
-
-            var view2 = FindChild<WebView2>(VideoFlipView);
-            PlayVideoInWebView2(view2);
+                var view2 = FindWebView2(container);
+                FullScreenAndPlayVideoInWebView2(view2);
+            }
 
             //   Debug.WriteLine(
             //sender.GetType()
@@ -143,6 +151,24 @@ namespace ZeroPlay.View
                                 _currentMediaPlayer?.Play();
                             }
                         }*/
+        }
+
+        private async void WebView2_Loaded(object sender, RoutedEventArgs e)
+        {
+
+            var webView2 = sender as WebView2;
+            if (webView2 != null && VideoFlipView.SelectedItem == webView2.DataContext)
+            {
+                // 将首个视频全屏
+                if (VideoFlipView.SelectedIndex == 0)
+                {
+                    await webView2.EnsureCoreWebView2Async(null);
+
+                    await webView2.CoreWebView2.ExecuteScriptAsync("var videos = document.getElementsByTagName('video');if (videos[0])videos[0].requestFullscreen();");
+
+                }
+
+            }
         }
 
         private void LikeButton_Click(object sender, RoutedEventArgs e)
@@ -210,6 +236,26 @@ namespace ZeroPlay.View
             return null; // Child not found
         }
 
+
+        private WebView2 FindWebView2(DependencyObject parent)
+        {
+
+            var childCount = VisualTreeHelper.GetChildrenCount(parent);
+            for (int i = 0; i < childCount; i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+                if (child is WebView2 mediaPlayer)
+                {
+                    return mediaPlayer;
+                }
+                var result = FindWebView2(child);
+                if (result != null)
+                {
+                    return result;
+                }
+            }
+            return null;
+        }
 
         private MediaPlayerElement FindMediaPlayerElement(DependencyObject parent)
         {

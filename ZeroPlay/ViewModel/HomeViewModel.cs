@@ -71,10 +71,21 @@ namespace ZeroPlay.ViewModel
     public class VideoItem
     {
         public MediaSource VideoUri { get; set; }
+
+        public string LikeNumStr { get; set; }
+
+
+        public string CommentNumStr { get; set; }
+
+
         public string Title { get; set; }
         public string Description { get; set; }
 
         public ImageSource AuthorAvatar { get; set; }
+
+
+        public string AuthorName { get; set; }
+
     }
 }
 

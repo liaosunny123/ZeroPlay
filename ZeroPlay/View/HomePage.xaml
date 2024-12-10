@@ -53,7 +53,9 @@
                                            VerticalAlignment="Stretch"
                                            Grid.Column="0"  
                                             MinHeight="200"
-                                           MinWidth="200"/>
+                                           MinWidth="200"
+                                               Loaded="WebView2_Loaded"
+                                               />
 
 
                             <StackPanel Orientation="Vertical"
@@ -82,6 +84,26 @@
 				                        Source="{Binding AuthorAvatar}"/>
                                 </Border>
 
+                                <!-- 查看主页 -->
+                                <Button x:Name="ProfileButton"
+                                        Click="LikeButton_Click"
+                                        Margin="0,8,0,0"
+                                        Foreground="White"
+                                        Background="Gray"
+                                        BorderBrush="Gray"
+                                   
+                                >
+                                    <!--Foreground="Black"-->
+
+                                    <Button.Content>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="查看主页" Margin="8,0,0,0"
+                                                   
+                                                   SelectionHighlightColor="White"/>
+                                        </StackPanel>
+                                    </Button.Content>
+                                </Button>
+
                                 <!-- 点赞功能部分 -->
                                 <Button x:Name="LikeButton"
                                         Click="LikeButton_Click"
@@ -99,7 +121,7 @@
                                                    Width="20"
                                                    Height="20"
                                                />
-                                            <TextBlock Text="点赞" Margin="8,0,0,0"
+                                            <TextBlock Text="{Binding LikeNumStr}" Margin="8,0,0,0"
                                                    
                                                    SelectionHighlightColor="White"/>
                                         </StackPanel>
@@ -121,7 +143,9 @@
                                             <Image Source="ms-appx:///Assets/comment_white.png"
                                                    Width="20"
                                                    Height="20"/>
-                                            <TextBlock Text="评论" Margin="8,0,0,0"/>
+                                            <TextBlock Text="{Binding CommentNumStr}" Margin="8,0,0,0" 
+                                         SelectionHighlightColor="White"/>
+
                                         </StackPanel>
                                     </Button.Content>
                                 </Button>
@@ -147,13 +171,15 @@
 
                             <AppBarButton Icon="Like" Label="SymbolIcon"/>
 
-                            <TextBlock Text="{Binding Title}"
-                                     Style="{ThemeResource TitleTextBlockStyle}"
-                                     Foreground="White"/>
-                            <TextBlock Text="{Binding Description}"
+
+                            <TextBlock Text="{Binding AuthorName}"
                                      Style="{ThemeResource BodyTextBlockStyle}"
                                      Foreground="White"
                                      Margin="0,8,0,0"/>
+                            <TextBlock Text="{Binding Title}"
+                                     Style="{ThemeResource TitleTextBlockStyle}"
+                                     Foreground="White"/>
+
 
                         </StackPanel>
 
