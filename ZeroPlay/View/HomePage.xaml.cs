@@ -88,7 +88,7 @@ namespace ZeroPlay.View
                     Description = video.Author.Name,
                     VideoUri = MediaSource.CreateFromUri(new Uri(video.PlayUrl)),
                     AuthorAvatar = new BitmapImage(new Uri(video.Author.Avatar)),
-                    AuthorName = video.Author.Name
+                    AuthorName = "@" + video.Author.Name
 
 
                 });
@@ -112,12 +112,12 @@ namespace ZeroPlay.View
             // 停止之前的视频
             //_currentMediaPlayer?.Pause();
 
-            //var curIdx = VideoFlipView.SelectedIndex;
-            //if (curIdx >= 0 && curIdx + 1 >= ViewModel.GetSize())
-            //{
-            //FetchVideo();
+            var curIdx = VideoFlipView.SelectedIndex;
+            if (curIdx >= 0 && curIdx + 1 >= ViewModel.GetSize())
+            {
+                FetchVideo();
 
-            //};
+            };
             var container = VideoFlipView.ContainerFromIndex(VideoFlipView.SelectedIndex) as FlipViewItem;
             if (container != null)
             {
