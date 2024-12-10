@@ -7,6 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:controls="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:controls1="using:ImageEx"
+        xmlns:controls2="using:ZeroPlay.Control"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -147,6 +148,17 @@
                                         Grid.Column="1" 
                                      Foreground="White"
                                      Margin="0,8,0,0"/>
+
+                            <StackPanel HorizontalAlignment="Center" 
+                                        Grid.Column="1"
+                                        VerticalAlignment="Center" 
+                                        Spacing="16">
+                                <!-- 其他控件，如视频播放器 -->
+
+                                <!-- 评论控件 -->
+                                <controls2:CommentControl VideoId="{Binding AuthorId}"/>
+                            </StackPanel>
+
 
                         </Grid>
 
