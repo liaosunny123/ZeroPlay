@@ -78,6 +78,8 @@ namespace ZeroPlay.ViewModel
 
         public string LikeNumStr { get; set; }
 
+        public ulong LikeNum { get; set; }
+
 
         public string CommentNumStr { get; set; }
 

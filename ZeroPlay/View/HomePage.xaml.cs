@@ -60,6 +60,7 @@ namespace ZeroPlay.View
                         ViewModel.Videos.Add(new VideoItem
                         {
                             LikeNumStr = $"{video.FavoriteCount}点赞",
+                            LikeNum = video.FavoriteCount,
                             CommentNumStr = $"{video.CommentCount}评论",
                             Title = video.Title,
                             Description = video.Author.Name,
@@ -92,8 +93,8 @@ namespace ZeroPlay.View
             // 创建 CommentDialog
             var dialog = new ContentDialog()
             {
-                Title = "Comments",
-                CloseButtonText = "Close",
+                Title = "视频评论",
+                CloseButtonText = "关闭",
                 DefaultButton = ContentDialogButton.Close,
                 Content = new CommentControl()
                 {
@@ -196,6 +197,9 @@ namespace ZeroPlay.View
 
         private void LikeButton_Click(object sender, RoutedEventArgs e)
         {
+            var num = ++ViewModel.Videos[VideoFlipView.SelectedIndex].LikeNum;
+            ViewModel.Videos[VideoFlipView.SelectedIndex].LikeNumStr = $"{num}点赞";
+
 
         }
 
