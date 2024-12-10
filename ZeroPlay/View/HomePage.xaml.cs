@@ -4,6 +4,7 @@ using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Navigation;
 using System;
 using System.Collections.Generic;
@@ -83,7 +84,8 @@ namespace ZeroPlay.View
                 {
                     Title = video.Title,
                     Description = video.Author.Name,
-                    VideoUri = MediaSource.CreateFromUri(new Uri(video.PlayUrl))
+                    VideoUri = MediaSource.CreateFromUri(new Uri(video.PlayUrl)),
+                    AuthorAvatar = new BitmapImage(new Uri(video.Author.Avatar))
 
                 });
             });

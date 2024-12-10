@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -72,6 +73,8 @@ namespace ZeroPlay.ViewModel
         public MediaSource VideoUri { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
+
+        public ImageSource AuthorAvatar { get; set; }
     }
 }
 
